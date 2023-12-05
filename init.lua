@@ -60,7 +60,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Configure plugins ]]
+-- [[ Configure plugins ]
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
 --
@@ -161,6 +161,8 @@ require('lazy').setup({
     end,
   },
 
+  { "catppuccin/nvim",      name = "catppuccin", priority = 1000 },
+
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -185,7 +187,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 'numToStr/Comment.nvim',  opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -220,8 +222,8 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.autoformat',
+  require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
@@ -229,7 +231,7 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -273,6 +275,13 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+-- Relative line numbers
+vim.wo.relativenumber = true
+
+-- Molten
+vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
+
+vim.cmd.colorscheme "catppuccin"
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
@@ -288,6 +297,25 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+
+-- NERDTree
+vim.keymap.set('n', '<leader>n', ":NERDTreeFocus<CR>", { desc = 'Focus on file tree' })
+vim.keymap.set('n', '<C-n>', ":NERDTree<CR>")
+vim.keymap.set('n', '<C-t>', ":NERDTreeToggle<CR>")
+vim.keymap.set('n', '<C-f>', ":NERDTreeFind<CR>")
+
+-- Molten
+vim.keymap.set("n", "<localleader>R", ":MoltenEvaluateOperator<CR>",
+  { silent = true, noremap = true, desc = "run operator selection" })
+vim.keymap.set("n", "<localleader>rl", ":MoltenEvaluateLine<CR>",
+  { silent = true, noremap = true, desc = "evaluate line" })
+vim.keymap.set("n", "<localleader>rc", ":MoltenReevaluateCell<CR>",
+  { silent = true, noremap = true, desc = "re-evaluate cell" })
+vim.keymap.set("v", "<localleader>r", ":<C-u>MoltenEvaluateVisual<CR>gv",
+  { silent = true, noremap = true, desc = "evaluate visual selection" })
+
+-- alt key
+-- - { key: A,        mods: Alt,       chars: "\x1ba"}
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -345,7 +373,7 @@ local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
     require('telescope.builtin').live_grep({
-      search_dirs = {git_root},
+      search_dirs = { git_root },
     })
   end
 end
@@ -378,7 +406,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'dart' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -513,7 +541,7 @@ require('mason-lspconfig').setup()
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
+  pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
