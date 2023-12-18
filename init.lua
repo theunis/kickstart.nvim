@@ -183,7 +183,7 @@ require('lazy').setup({
         section_separators = '',
       },
       sections = {
-        lualine_x = { 'g:flutter_tools_decorations.app_version', 'g:flutter_tools_decorations.device', 'encoding', 'fileformat', 'filetype' },
+        lualine_x = { 'aerial', 'g:flutter_tools_decorations.app_version', 'g:flutter_tools_decorations.device', 'encoding', 'fileformat', 'filetype' },
       }
     },
   },
@@ -357,6 +357,7 @@ pcall(require('telescope').load_extension, 'fzf')
 
 -- Telescop Flutter
 require('telescope').load_extension('Flutter')
+require('telescope').load_extension('aerial')
 -- Telescope live_grep in git root
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
@@ -424,6 +425,18 @@ require("flutter-tools").setup {
     }
   }
 }
+
+-- Aerial
+require("aerial").setup({
+  -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+  on_attach = function(bufnr)
+    -- Jump forwards/backwards with '{' and '}'
+    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+  end,
+})
+-- You probably also want to set a keymap to toggle aerial
+vim.keymap.set("n", "<leader>t", "<cmd>AerialToggle!<CR>")
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
