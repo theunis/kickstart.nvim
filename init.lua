@@ -108,7 +108,15 @@ require('lazy').setup({
 
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
+
+      -- Quarto / Otter
+      'jmbuhr/otter.nvim'
     },
+    -- opts = function(_, opts)
+    --   ---@param opts cmp.ConfigSchema
+    --   local cmp = require("cmp")
+    --   opts.sources = cmp.config.sources(vim.list_extend(opts.sources, { { name = "otter" } }))
+    -- end,
   },
 
   -- Useful plugin to show you pending keybinds.
@@ -423,7 +431,42 @@ require("flutter-tools").setup {
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    -- ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+
+    ensure_installed = {
+      "bash",
+      "c",
+      "html",
+      "javascript",
+      "json",
+      "lua",
+      "luadoc",
+      "luap",
+      "markdown",
+      "markdown_inline",
+      "python",
+      "query",
+      "regex",
+      "tsx",
+      "typescript",
+      "vim",
+      "vimdoc",
+      "yaml",
+      "bash",
+      "html",
+      "css",
+      "javascript",
+      "json",
+      "lua",
+      "markdown",
+      "markdown_inline",
+      "python",
+      "vim",
+      "yaml",
+      "python",
+      "julia",
+      "r",
+    },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
