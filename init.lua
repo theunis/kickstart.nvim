@@ -169,11 +169,14 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
-        theme = 'onedark',
+        icons_enabled = true,
+        theme = 'auto',
         component_separators = '|',
         section_separators = '',
       },
+      sections = {
+        lualine_x = { 'g:flutter_tools_decorations.app_version', 'g:flutter_tools_decorations.device', 'encoding', 'fileformat', 'filetype' },
+      }
     },
   },
 
@@ -344,6 +347,8 @@ require('telescope').setup {
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 
+-- Telescop Flutter
+require('telescope').load_extension('Flutter')
 -- Telescope live_grep in git root
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
@@ -400,13 +405,25 @@ vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by 
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
+-- FLutter commands
+vim.keymap.set('n', '<leader>fc', '<Cmd>Telescope flutter commands<CR>', { desc = '[F]lutter [C]ommands' })
+
+require("flutter-tools").setup {
+  decorations = {
+    statusline = {
+      app_version = true,
+      device = true,
+    }
+  }
+}
+
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'dart' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -523,6 +540,7 @@ require('which-key').register {
   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+  ['<leader>f'] = { name = '[F]lutter', _ = 'which_key_ignore' },
 }
 
 -- mason-lspconfig requires that these setup functions are called in this order
