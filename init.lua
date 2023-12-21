@@ -75,7 +75,15 @@ require('lazy').setup({
 
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
+
+      -- Quarto / Otter
+      'jmbuhr/otter.nvim'
     },
+    -- opts = function(_, opts)
+    --   ---@param opts cmp.ConfigSchema
+    --   local cmp = require("cmp")
+    --   opts.sources = cmp.config.sources(vim.list_extend(opts.sources, { { name = "otter" } }))
+    -- end,
   },
 
   -- Useful plugin to show you pending keybinds.
@@ -142,7 +150,7 @@ require('lazy').setup({
         section_separators = '',
       },
       sections = {
-        lualine_x = { 'g:flutter_tools_decorations.app_version', 'g:flutter_tools_decorations.device', 'encoding', 'fileformat', 'filetype' },
+        lualine_x = { 'aerial', 'g:flutter_tools_decorations.app_version', 'g:flutter_tools_decorations.device', 'encoding', 'fileformat', 'filetype' },
       }
     },
   },
@@ -288,6 +296,7 @@ pcall(require('telescope').load_extension, 'fzf')
 
 -- Telescop Flutter
 require('telescope').load_extension('Flutter')
+require('telescope').load_extension('aerial')
 -- Telescope live_grep in git root
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
@@ -348,13 +357,60 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.keymap.set('n', '<leader>fc', '<Cmd>Telescope flutter commands<CR>', { desc = '[F]lutter [C]ommands' })
 
 
+-- Aerial
+require("aerial").setup({
+  -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+  on_attach = function(bufnr)
+    -- Jump forwards/backwards with '{' and '}'
+    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+  end,
+})
+-- You probably also want to set a keymap to toggle aerial
+vim.keymap.set("n", "<leader>t", "<cmd>AerialToggle!<CR>")
+
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    -- ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+
+    ensure_installed = {
+      "bash",
+      "c",
+      "html",
+      "javascript",
+      "json",
+      "lua",
+      "luadoc",
+      "luap",
+      "markdown",
+      "markdown_inline",
+      "python",
+      "query",
+      "regex",
+      "tsx",
+      "typescript",
+      "vim",
+      "vimdoc",
+      "yaml",
+      "bash",
+      "html",
+      "css",
+      "javascript",
+      "json",
+      "lua",
+      "markdown",
+      "markdown_inline",
+      "python",
+      "vim",
+      "yaml",
+      "python",
+      "julia",
+      "r",
+    },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
