@@ -3,7 +3,7 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	'preservim/nerdtree',
-	'Xuyuanp/nerdtree-git-plugin',
+	-- 'preservim/nerdtree',
+	-- 'Xuyuanp/nerdtree-git-plugin',
 	'ryanoasis/vim-devicons'
 }

@@ -5,5 +5,13 @@ return {
 		'nvim-lua/plenary.nvim',
 		'stevearc/dressing.nvim', -- optional for vim.ui.select
 	},
+	opts = {
+		decorations = {
+			statusline = {
+				app_version = true,
+				device = true,
+			}
+		}
+	},
 	config = true,
 }
