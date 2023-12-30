@@ -90,6 +90,8 @@ return {
             name = 'Run',
             r = { ':QuartoSendAbove<CR>', 'Run to Cursor' },
             a = { ':QuartoSendAll<CR>', 'Run All' },
+            b = { ':QuartoSendBelow<CR>', 'Run below' },
+            l = { ':QuartoSendLine<CR>', 'Run line' },
           },
         },
 
@@ -102,10 +104,10 @@ return {
           p = { 'o```{python}<cr>```<esc>O', 'python code chunk' },
         },
         -- Slime Commands
-        ['<CR>'] = { ':SlimeSend<CR>', 'Execute Code Chunk' },
+        ['<CR>'] = { ':QuartoSend<CR>', 'Execute Code Chunk' },
         e = {
           name = 'Execute',
-          ['<CR>'] = { '<Plug>SlimeRegionSend<CR>', 'Send Region', mode = 'v' },
+          ['<CR>'] = { '<Plug>QuartoSendRange<CR>', 'Send Region', mode = 'v' },
         },
 
         -- Terminal Commands
@@ -140,7 +142,7 @@ return {
             d = { '<Cmd>MoltenDelete<CR>', 'Delete Cell', noremap = true, silent = true },
             h = { '<Cmd>MoltenHideOutput<CR>', 'Hide Output', noremap = true, silent = true },
             s = { '<Cmd>noautocmd MoltenEnterOutput<CR>', 'Show/Enter Output', noremap = true, silent = true },
-            r = { '<Cmd>MoltenOpenInBrowser<CR>', 'Open in Browser'},
+            r = { '<Cmd>MoltenOpenInBrowser<CR>', 'Open in Browser' },
           },
           f = {
             name = 'Flutter',
@@ -178,10 +180,12 @@ return {
         ['['] = {
           name = 'Previous',
           d = { '<Cmd>lua vim.diagnostic.goto_prev()<CR>', 'Diagnostic' },
+          c = { '<Cmd>MoltenPrev<CR>', 'Code chunk' },
         },
         [']'] = {
           name = 'Next',
           d = { '<Cmd>lua vim.diagnostic.goto_next()<CR>', 'Diagnostic' },
+          c = { '<Cmd>MoltenNext<CR>', 'Code chunk' },
         },
 
         -- Workspace (Session) Management
@@ -210,6 +214,16 @@ return {
       },
       -- Additional keybind outside of leader key
       -- gR = { "<cmd>lua require('trouble').toggle('lsp_references')<cr>", 'LSP References' },
+      ['['] = {
+        name = 'Previous',
+        d = { '<Cmd>lua vim.diagnostic.goto_prev()<CR>', 'Diagnostic' },
+        c = { '<Cmd>MoltenPrev<CR>', 'Code chunk' },
+      },
+      [']'] = {
+        name = 'Next',
+        d = { '<Cmd>lua vim.diagnostic.goto_next()<CR>', 'Diagnostic' },
+        c = { '<Cmd>MoltenNext<CR>', 'Code chunk' },
+      },
     }
 
     local is_code_chunk = function()

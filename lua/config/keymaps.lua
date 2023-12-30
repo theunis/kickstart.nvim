@@ -20,6 +20,11 @@ keymap.set('n', '<C-j>', '<C-w>j') -- Navigate Down
 keymap.set('n', '<C-k>', '<C-w>k') -- Navigate Up
 keymap.set('n', '<C-l>', '<C-w>l') -- Navigate Right
 
+keymap.set('i', '<C-h>', '<Esc><C-w>h') -- Navigate Left
+keymap.set('i', '<C-j>', '<Esc><C-w>j') -- Navigate Down
+keymap.set('i', '<C-k>', '<Esc><C-w>k') -- Navigate Up
+keymap.set('i', '<C-l>', '<Esc><C-w>l') -- Navigate Right
+
 keymap.set('n', '<C-`>', '<CMD>lua require("FTerm").toggle()<CR>')
 keymap.set('t', '<C-`>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
 
