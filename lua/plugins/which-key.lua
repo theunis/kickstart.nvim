@@ -60,7 +60,7 @@ return {
           c = { "<Cmd>lua require'dap'.continue()<CR>", 'Continue' },
           s = { "<Cmd>lua require'dap'.step_over()<CR>", 'Step Over' },
           i = { "<Cmd>lua require'dap'.step_into()<CR>", 'Step Into' },
-          u = { "<Cmd>lua require'dap'.step_out()<CR>", 'Step Out' },
+          o = { "<Cmd>lua require'dap'.step_out()<CR>", 'Step Out' },
           b = { "<Cmd>lua require'dap'.toggle_breakpoint()<CR>", 'Toggle Breakpoint' },
           B = { "<Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional Breakpoint' },
           l = { "<Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", 'Log Point' },
