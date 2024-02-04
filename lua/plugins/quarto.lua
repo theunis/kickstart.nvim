@@ -88,8 +88,8 @@ return {
       },
       codeRunner = {
         enabled = true,
-        default_method = { 'molten' }, -- 'molten' or 'slime'
-        ft_runners = { python = 'molten' }, -- filetype to runner, ie. `{ python = "molten" }`.
+        default_method = { 'slime' }, -- 'molten' or 'slime'
+        ft_runners = { python = 'slime' }, -- filetype to runner, ie. `{ python = "molten" }`.
         -- Takes precedence over `default_method`
         never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
       },
