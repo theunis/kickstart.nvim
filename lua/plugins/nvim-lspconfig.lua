@@ -65,7 +65,7 @@ local config = function()
   local stylua = require 'efmls-configs.formatters.stylua'
   local flake8 = require 'efmls-configs.linters.flake8'
   local black = require 'efmls-configs.formatters.black'
-  local dartanalyzer = require 'efmls-configs.linters.dartanalyzer'
+  local dartanalyzer = require 'linters.dart_analyze'
   local dartfmt = require 'efmls-configs.formatters.dartfmt'
   -- configure efm server
   lspconfig.efm.setup {
