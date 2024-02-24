@@ -13,6 +13,16 @@ return {
         vim.cmd [[Catppuccin latte]]
       end
     end
+    -- Function to start browser-sync in a new terminal buffer
+    local function start_browser_sync()
+      -- Open a new terminal and run the command
+      vim.cmd "terminal cd ~/html/ && browser-sync start --server --files '*.html'"
+      -- Go back to the previous buffer
+      vim.cmd 'normal! <C-\\><C-n><C-^>'
+      -- If you want to hide the terminal buffer instead of just switching away,
+      -- you can use the following command
+      -- vim.cmd("hide")
+    end
     -- General keybindings
     local mappings = {
       ['<leader>'] = {
@@ -131,7 +141,7 @@ return {
         tt = {
           name = 'Terminal',
           r = { ':split term://R<CR>', 'R Terminal' },
-          i = { ':split term://ipython<CR>', 'IPython Terminal' },
+          i = { ':split term://ipython --profile terminal<CR>', 'IPython Terminal' },
           p = { ':split term://python<CR>', 'Python Terminal' },
           j = { ':split term://julia<CR>', 'Julia Terminal' },
         },
@@ -141,6 +151,7 @@ return {
           t = {
             name = 'Terminal',
             t = { '<Cmd>lua require("FTerm").toggle()<CR>', 'Toggle Terminal (Ctrl-`)' },
+            b = { start_browser_sync, 'Start browser-sync on ~/html', silent = true },
           },
           c = {
             name = 'Github Copilot',
