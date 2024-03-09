@@ -52,4 +52,4 @@ opt.timeoutlen = 300
 -- Molten
 vim.g.python3_host_prog = vim.fn.expand '~/.virtualenvs/neovim/bin/python3'
 
-
+vim.o.tags = vim.o.tags .. ',.tags_columns'

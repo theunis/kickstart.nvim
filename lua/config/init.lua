@@ -14,15 +14,16 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Require magick luarocks package 
+-- Require magick luarocks package
 -- package.path = package.path .. ";~/.luarocks.share/lua/5.1/magick/init.lua;"
-package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua;"
-package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua;"
+package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?/init.lua;'
+package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?.lua;'
 
 require 'config.globals'
 require 'config.options'
 require 'config.keymaps'
 require 'config.autocmds'
+require 'config.custom'
 
 local plugins = 'plugins'
 

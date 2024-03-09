@@ -23,8 +23,33 @@ return {
       -- you can use the following command
       -- vim.cmd("hide")
     end
+    local function execute_code_block_and_move()
+      -- This is a placeholder for the command to execute the current block in vim-slime.
+      -- You'll need to replace `<cmd>` with the actual command or sequence to execute the block.
+      vim.api.nvim_exec('QuartoSend', false)
+
+      -- Logic to move to the next code block after execution.
+      -- This is highly simplified and needs to be replaced with actual logic to move to the next code block.
+      -- For example, you might search for the next set of triple backticks in markdown.
+      vim.cmd 'normal ]]'
+
+      -- Optionally, move the cursor down one line if needed.
+      vim.cmd 'normal! j'
+    end
+
+    -- Define the function to create a new .qmd scratch file
+    local function create_qmd_scratch_file()
+      local datetime = os.date '%Y-%m-%d_%H-%M-%S'
+      local filepath = vim.fn.expand '~/notebooks/dev/dev-' .. datetime .. '.qmd'
+      -- Ensure the directory exists
+      vim.fn.mkdir(vim.fn.expand '~/notebooks/dev/', 'p')
+      -- Open the new file
+      vim.cmd('edit ' .. filepath)
+    end
+
     -- General keybindings
     local mappings = {
+      ['<S-CR>'] = { execute_code_block_and_move, 'Execute code block and move to next' },
       ['<leader>'] = {
         -- File & Project Management
         f = {
@@ -43,7 +68,7 @@ return {
         -- Search & Quick Access
         s = {
           name = 'Search',
-          s = { '<Cmd>Telescope live_grep<CR>', 'Live Search' },
+          s = { '<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>', 'Workspace Symbols' },
           g = { '<Cmd>Telescope live_grep<CR>', 'Grep Project' },
           f = { '<Cmd>Telescope find_files<CR>', 'Find Files' },
         },
@@ -120,15 +145,19 @@ return {
             b = { ':QuartoSendBelow<CR>', 'Run below' },
             l = { ':QuartoSendLine<CR>', 'Run line' },
           },
+          s = { create_qmd_scratch_file, 'Create .qmd scratch file' },
         },
 
         o = {
           name = 'Code Chunk',
-          o = { 'o# %%<cr>', 'new code chunk below' },
-          O = { 'O# %%<cr>', 'new code chunk above' },
-          b = { 'o```{bash}<cr>```<esc>O', 'bash code chunk' },
-          r = { 'o```{r}<cr>```<esc>O', 'r code chunk' },
-          p = { 'o```{python}<cr>```<esc>O', 'python code chunk' },
+          a = { 'o# %%<cr>', 'New code chunk below' },
+          A = { 'O# %%<cr>', 'New code chunk above' },
+          b = { 'o```{bash}<cr>```<esc>O', 'Bash code chunk' },
+          r = { 'o```{r}<cr>```<esc>O', 'R code chunk' },
+          p = { 'o```{python}<cr>```<esc>O', 'Python code chunk' },
+          o = { 'k][jo```{python}<cr>```<esc>O', 'Python code chunk below' },
+          O = { 'j[]kko```{python}<cr>```<esc>O', 'Python code chunk above' },
+          ['-'] = { 'o```<cr><cr>```{python}<esc>kkk', 'Split cell' },
         },
         -- Slime Commands
         ['<CR>'] = { ':QuartoSend<CR>', 'Execute Code Chunk' },
