@@ -24,14 +24,18 @@ local config = function()
     auto_install = false,
 
     highlight = { enable = true },
-    indent = { enable = true },
+    -- indent = { enable = true },
+    indent = {
+      enable = true,
+      disable = { 'dart' },
+    },
     incremental_selection = {
       enable = true,
       keymaps = {
-        init_selection = '<c-space>',
-        node_incremental = '<c-space>',
-        scope_incremental = '<c-s>',
-        node_decremental = '<M-space>',
+        init_selection = 'gnn',
+        node_incremental = 'grn',
+        scope_incremental = 'grc',
+        node_decremental = 'grm',
       },
     },
     textobjects = {
@@ -42,10 +46,10 @@ local config = function()
           -- You can use the capture groups defined in textobjects.scm
           ['aa'] = '@parameter.outer',
           ['ia'] = '@parameter.inner',
-          ['af'] = '@function.outer',
-          ['if'] = '@function.inner',
-          ['ac'] = '@class.outer',
-          ['ic'] = '@class.inner',
+          ['af'] = { query = '@function.outer', desc = 'Select outer part of a function region' },
+          ['if'] = { query = '@function.inner', desc = 'Select inner part of a function region' },
+          ['ac'] = { query = '@class.outer', desc = 'Select outer part of a class region' },
+          ['ic'] = { query = '@class.inner', desc = 'Select inner part of a class region' },
         },
       },
       move = {
@@ -88,6 +92,7 @@ return {
   config = config,
   dependencies = {
     'nvim-treesitter/nvim-treesitter-textobjects',
+    'nvim-treesitter/nvim-treesitter-context',
   },
   build = ':TSUpdate',
 }

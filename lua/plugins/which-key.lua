@@ -207,8 +207,8 @@ return {
             r = { '<Cmd>FlutterRun<CR>', 'Run' },
             d = { '<Cmd>FlutterDevices<CR>', 'Devices' },
             e = { '<Cmd>FlutterEmulators<CR>', 'Emulators' },
-            h = { '<Cmd>FlutterHotReload<CR>', 'Hot Reload' },
-            s = { '<Cmd>FlutterHotRestart<CR>', 'Hot Restart' },
+            l = { '<Cmd>FlutterReload<CR>', 'Hot Reload' },
+            s = { '<Cmd>FlutterRestart<CR>', 'Hot Restart' },
             t = { '<Cmd>FlutterTest<CR>', 'Run Tests' },
           },
           g = {
