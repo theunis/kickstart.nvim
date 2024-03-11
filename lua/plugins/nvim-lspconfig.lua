@@ -11,7 +11,10 @@ local config = function()
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
   end
 
-  local capabilities = cmp_nvim_lsp.default_capabilities()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = vim.tbl_deep_extend('force', capabilities, cmp_nvim_lsp.default_capabilities())
+
+  -- local capabilities = cmp_nvim_lsp.default_capabilities()
   capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true,
@@ -103,5 +106,6 @@ return {
     'hrsh7th/nvim-cmp',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-nvim-lsp',
+    { 'j-hui/fidget.nvim', opts = {} },
   },
 }

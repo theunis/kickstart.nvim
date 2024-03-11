@@ -23,10 +23,35 @@ return {
       -- you can use the following command
       -- vim.cmd("hide")
     end
+
+    -- Define a Lua function to send code to the terminal, scroll down, and return to the original window
+    local function send_to_terminal_and_scroll_down()
+      vim.cmd 'QuartoSend'
+      -- Save the current window
+      local original_window = vim.api.nvim_get_current_win()
+      -- Iterate through all windows
+      local windows = vim.api.nvim_list_wins()
+      for _, win in ipairs(windows) do
+        local buf_type = vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(win), 'buftype')
+        if buf_type == 'terminal' then
+          -- Switch to the terminal window
+          vim.api.nvim_set_current_win(win)
+          -- Scroll to the bottom
+          vim.cmd 'normal! G'
+          break
+        end
+      end
+      -- Return to the original window
+      vim.api.nvim_set_current_win(original_window)
+    end
+
     local function execute_code_block_and_move()
       -- This is a placeholder for the command to execute the current block in vim-slime.
       -- You'll need to replace `<cmd>` with the actual command or sequence to execute the block.
-      vim.api.nvim_exec('QuartoSend', false)
+      -- Send to terminal and scroll down:
+      send_to_terminal_and_scroll_down()
+
+      -- vim.api.nvim_exec('QuartoSend', false)
 
       -- Logic to move to the next code block after execution.
       -- This is highly simplified and needs to be replaced with actual logic to move to the next code block.
@@ -160,7 +185,7 @@ return {
           ['-'] = { 'o```<cr><cr>```{python}<esc>kkk', 'Split cell' },
         },
         -- Slime Commands
-        ['<CR>'] = { ':QuartoSend<CR>', 'Execute Code Chunk' },
+        ['<CR>'] = { send_to_terminal_and_scroll_down, 'Execute Code Chunk' },
         e = {
           name = 'Execute',
           ['<CR>'] = { '<Plug>QuartoSendRange<CR>', 'Send Region', mode = 'v' },
@@ -186,8 +211,8 @@ return {
             name = 'Github Copilot',
             c = { '<Cmd>lua require"copilot".complete()<CR>', 'Complete' },
             s = { '<Cmd>lua require"copilot".suggest()<CR>', 'Suggest' },
-            d = { '<Cmd>lua require"copilot".disable()<CR>', 'Disable' },
-            e = { '<Cmd>lua require"copilot".enable()<CR>', 'Enable' },
+            d = { '<Cmd>Copilot disable<CR>', 'Disable' },
+            e = { '<Cmd>Copilot enable<CR>', 'Enable' },
           },
           m = {
             name = 'Molten',
