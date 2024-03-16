@@ -13,6 +13,7 @@ return {
         vim.cmd [[Catppuccin latte]]
       end
     end
+
     -- Function to start browser-sync in a new terminal buffer
     local function start_browser_sync()
       -- Open a new terminal and run the command
@@ -21,7 +22,7 @@ return {
       vim.cmd 'normal! <C-\\><C-n><C-^>'
       -- If you want to hide the terminal buffer instead of just switching away,
       -- you can use the following command
-      -- vim.cmd("hide")
+      vim.cmd 'hide'
     end
 
     -- Define a Lua function to send code to the terminal, scroll down, and return to the original window
@@ -43,6 +44,28 @@ return {
       end
       -- Return to the original window
       vim.api.nvim_set_current_win(original_window)
+    end
+
+    local function send_dataframe_to_duckdb()
+      -- Get the word under the cursor, assumed to be the DataFrame variable name
+      local dataframe_name = vim.fn.expand '<cword>'
+
+      -- Construct the to_duckdb magic command with the DataFrame name
+      local command = '%to_duckdb ' .. dataframe_name .. ' ' .. dataframe_name .. '\n'
+
+      -- Send the command to IPython via vim-slime
+      vim.fn['slime#send'](command)
+    end
+
+    local function send_dataframe_to_feather()
+      -- Get the word under the cursor, assumed to be the DataFrame variable name
+      local dataframe_name = vim.fn.expand '<cword>'
+
+      -- Construct the to_feather magic command with the DataFrame name
+      local command = '%to_feather ' .. dataframe_name .. ' ' .. dataframe_name .. '.feather\n'
+
+      -- Send the command to IPython via vim-slime
+      vim.fn['slime#send'](command)
     end
 
     local function execute_code_block_and_move()
@@ -189,6 +212,15 @@ return {
         e = {
           name = 'Execute',
           ['<CR>'] = { '<Plug>QuartoSendRange<CR>', 'Send Region', mode = 'v' },
+        },
+
+        -- Save
+        r = {
+          name = 'Register',
+          f = { send_dataframe_to_feather, 'Save dataframe to Feather' },
+          d = { send_dataframe_to_duckdb, 'Save dataframe to DuckDB' },
+          w = { ':vsplit term://vdsql default.duckdb<CR>', 'Open DuckDB in Visidata' },
+          v = { ':vsplit term://vd ./feather_data/<CR>', 'Open Feather in Visidata' },
         },
 
         -- Terminal Commands
