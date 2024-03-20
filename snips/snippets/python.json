@@ -16,13 +16,13 @@
 	"Altair Repeat Column": {
 		"prefix": "arc",
 		"body": [
-      "repeat(column=[\"$1\"])"
+      "repeat(column=[\"$1\"$2])"
     ]
 	},
 	"Altair Repeat Row": {
 		"prefix": "arr",
 		"body": [
-      "repeat(row=[\"$1\"])"
+      "repeat(row=[\"$1\"$2])"
     ]
 	},
   "Pandas Filter": {
@@ -40,7 +40,7 @@
   "Pandas Select": {
     "prefix": "pf",
     "body": [
-      "filter(items=[\"$1\"])"
+      "filter(items=[\"$1\"$2])"
     ]
   }
 }
