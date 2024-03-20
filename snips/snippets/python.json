@@ -1,0 +1,46 @@
+{
+	"Anonymous function": {
+		"prefix": "lx",
+		"body": [
+			"lambda x: "
+		],
+		"description": "Anonymous function"
+	},
+	"Altair Chart": {
+		"prefix": "ac",
+		"body": [
+      "alt.Chart($1).mark_$2().encode($3)"
+    ],
+		"description": "Altair Chart"
+	},
+	"Altair Repeat Column": {
+		"prefix": "arc",
+		"body": [
+      "repeat(column=[\"$1\"])"
+    ]
+	},
+	"Altair Repeat Row": {
+		"prefix": "arr",
+		"body": [
+      "repeat(row=[\"$1\"])"
+    ]
+	},
+  "Pandas Filter": {
+    "prefix": "pl",
+    "body": [
+      "loc[lambda x: $1]"
+    ]
+  },
+  "Pandas Assign": {
+    "prefix": "pa",
+    "body": [
+      "assign($1=lambda x: $2)"
+    ]
+  },
+  "Pandas Select": {
+    "prefix": "pf",
+    "body": [
+      "filter(items=[\"$1\"])"
+    ]
+  }
+}

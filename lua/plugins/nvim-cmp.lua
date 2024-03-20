@@ -73,6 +73,12 @@ return {
         }),
       },
     })
+    -- for custom snippets
+    require("luasnip.loaders.from_vscode").load({ paths = { "~/.config/nvim/snips" } })
+    -- require("luasnip.loaders.from_vscode").lazy_load({ paths = { vim.fn.stdpath("config") .. "/snips" } })
+    luasnip.filetype_extend("quarto", { "markdown" })
+    luasnip.filetype_extend("rmarkdown", { "markdown" })
+    luasnip.filetype_extend("quarto", { "python" })
   end,
   dependencies = {
     "onsails/lspkind.nvim",
