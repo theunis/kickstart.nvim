@@ -11,6 +11,7 @@ return {
   {
     'quarto-dev/quarto-nvim',
     lazy = false,
+    keymap = {},
     dependencies = {
 
       -- this taps into vim.ui.select and vim.ui.input
