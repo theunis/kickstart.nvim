@@ -25,7 +25,31 @@
       "repeat(row=[\"$1\"$2])"
     ]
 	},
-  "Pandas Filter": {
+  "Altair Repeat": {
+    "prefix": "ar",
+    "body": [
+      "repeat(column=[\"$1\"$2], row=[\"$3\"$4])"
+    ]
+  },
+  "Altair Facet Column": {
+    "prefix": "afc",
+    "body": [
+      "facet(column=\"$1\")"
+    ]
+  },
+  "Altair Facet Row": {
+    "prefix": "afr",
+    "body": [
+      "facet(row=\"$1\")"
+    ]
+  },
+  "Altair Facet": {
+    "prefix": "af",
+    "body": [
+      "facet(column=\"$1\", row=\"$2\")"
+    ]
+  },
+  "Pandas Loc": {
     "prefix": "pl",
     "body": [
       "loc[lambda x: $1]"
@@ -37,10 +61,76 @@
       "assign($1=lambda x: $2)"
     ]
   },
-  "Pandas Select": {
+  "Pandas Filter": {
     "prefix": "pf",
     "body": [
       "filter(items=[\"$1\"$2])"
+    ]
+  },
+  "Pandas Groupby": {
+    "prefix": "pg",
+    "body": [
+      "groupby($1)"
+    ]
+  },
+  "Pandas Sort": {
+    "prefix": "ps",
+    "body": [
+      "sort_values(by=[\"$1\"$2])"
+    ]
+  },
+  "Pandas Drop": {
+    "prefix": "pd",
+    "body": [
+      "drop(columns=[\"$1\"$2])"
+    ]
+  },
+  "Pandas Rename": {
+    "prefix": "prn",
+    "body": [
+      "rename(columns={\"$1\": \"$2\"$3})"
+    ]
+  },
+  "Pandas Merge": {
+    "prefix": "pm",
+    "body": [
+      "merge($1, on=\"$2\"$3)"
+    ]
+  },
+  "Pandas Pivot": {
+    "prefix": "pp",
+    "body": [
+      "pivot_table(index=\"$1\", columns=\"$2\", values=\"$3\"$4)"
+    ]
+  },
+  "Pandas Melt": {
+    "prefix": "pmt",
+    "body": [
+      "melt(id_vars=[\"$1\"$2], value_vars=[\"$3\"$4])"
+    ]
+  },
+  "Pandas Fillna": {
+    "prefix": "pfn",
+    "body": [
+      "fillna($1)"
+    ]
+  },
+  "Pandas Dropna": {
+    "prefix": "pdn",
+    "body": [
+      "dropna($1)"
+    ]
+  },
+  "Create list of strings": {
+    "prefix": "li",
+    "body": [
+      "[\"$1\"$2]"
+    ]
+  },
+  "Add to list of strings": {
+    "prefix": "i",
+    "body": [
+      ", \"$1\"$2"
     ]
   }
 }

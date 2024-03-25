@@ -14,16 +14,34 @@ return {
       end
     end
 
-    -- Function to start browser-sync in a new terminal buffer
     local function start_browser_sync()
-      -- Open a new terminal and run the command
-      vim.cmd("terminal cd ~/html/ && browser-sync start --server --files '*.html'")
-      -- Go back to the previous buffer
-      vim.cmd("normal! <C-\\><C-n><C-^>")
-      -- If you want to hide the terminal buffer instead of just switching away,
-      -- you can use the following command
-      vim.cmd("hide")
+      -- Command to check if the tmux session exists
+      local check_session_cmd = "tmux has-session -t altairchart 2>/dev/null"
+
+      -- Command to create the tmux session and run browser-sync
+      local create_session_cmd =
+        "tmux new-session -d -s altairchart 'cd ~/html/ && browser-sync start --server --files \"*.html\"'"
+
+      -- Check if the 'browsersync' session already exists
+      if os.execute(check_session_cmd) ~= 0 then
+        -- The session does not exist, create it and run the command
+        os.execute(create_session_cmd)
+      else
+        -- The session exists, do nothing
+        print("Tmux session 'altairchart' already exists.")
+      end
     end
+
+    -- -- Function to start browser-sync in a new terminal buffer
+    -- local function start_browser_sync()
+    --   -- Open a new terminal and run the command
+    --   vim.cmd("terminal cd ~/html/ && browser-sync start --server --files '*.html'")
+    --   -- Go back to the previous buffer
+    --   vim.cmd("normal! <C-\\><C-n><C-^>")
+    --   -- If you want to hide the terminal buffer instead of just switching away,
+    --   -- you can use the following command
+    --   vim.cmd("hide")
+    -- end
 
     -- Define a Lua function to send code to the terminal, scroll down, and return to the original window
     local function send_to_terminal_and_scroll_down()
@@ -49,9 +67,10 @@ return {
     local function send_dataframe_to_duckdb()
       -- Get the word under the cursor, assumed to be the DataFrame variable name
       local dataframe_name = vim.fn.expand("<cword>")
+      local db_location = vim.fn.getcwd() .. "/default.duckdb"
 
       -- Construct the to_duckdb magic command with the DataFrame name
-      local command = "%to_duckdb " .. dataframe_name .. " " .. dataframe_name .. "\n"
+      local command = "%to_duckdb " .. dataframe_name .. " " .. dataframe_name .. ' "' .. db_location .. '"\n'
 
       -- Send the command to IPython via vim-slime
       vim.fn["slime#send"](command)
@@ -72,9 +91,10 @@ return {
       -- This is a placeholder for the command to execute the current block in vim-slime.
       -- You'll need to replace `<cmd>` with the actual command or sequence to execute the block.
       -- Send to terminal and scroll down:
-      send_to_terminal_and_scroll_down()
+      -- send_to_terminal_and_scroll_down()
+      -- vim.cmd("QuartoSend")
 
-      -- vim.api.nvim_exec('QuartoSend', false)
+      vim.api.nvim_exec("QuartoSend", false)
 
       -- Logic to move to the next code block after execution.
       -- This is highly simplified and needs to be replaced with actual logic to move to the next code block.
@@ -98,6 +118,7 @@ return {
     -- General keybindings
     local mappings = {
       ["<S-CR>"] = { execute_code_block_and_move, "Execute code block and move to next" },
+      -- ["<S-CR>"] = { "<Cmd>QuartoSend<CR>" },
       ["<leader>"] = {
         ["<CR>"] = { send_to_terminal_and_scroll_down, "Execute Code Chunk" },
         ["/"] = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Fuzzy Buffer" },
@@ -196,7 +217,7 @@ return {
           o = { "<Cmd>lua vim.diagnostic.setloclist()<CR>", "Diagnostic List" },
           p = { "<Cmd>Lspsaga diagnostic_jump_prev<CR>", "Prev Diagnostic" },
           q = { "<cmd>lua require('trouble').toggle('quickfix')<cr>", "Quickfix" },
-          R = { "<Cmd>Lspsaga rename<CR>", "Rename" },
+          r = { "<Cmd>Lspsaga rename<CR>", "Rename" },
           w = { "<cmd>lua require('trouble').toggle('workspace_diagnostics')<cr>", "Workspace Diagnostics" },
         },
         -- Search & Quick Access
@@ -263,7 +284,8 @@ return {
           t = {
             name = "Terminal",
             b = { start_browser_sync, "Start browser-sync on ~/html", silent = true },
-            i = { ":split term://ipython --profile terminal<CR>", "IPython Terminal" },
+            -- i = { ":split term://ipython --profile terminal<CR>", "IPython Terminal" },
+            i = { ":silent !tmux split-window -v 'ipython --profile terminal'<CR>", "IPython Terminal" },
             j = { ":split term://julia<CR>", "Julia Terminal" },
             p = { ":split term://python<CR>", "Python Terminal" },
             r = { ":split term://R<CR>", "R Terminal" },
@@ -338,9 +360,9 @@ return {
           s = {
             name = "System & Env",
             e = { ":Telescope find_files cwd=~/.config/nvim/<CR>", "Edit Config" },
-            s = { "<Cmd>split | terminal<CR>", "System Shell" },
             v = { "<Cmd>source $MYVIMRC<CR>", "Reload Config" },
             t = { toggle_light_dark_theme, "Switch theme" },
+            s = { require("luasnip.loaders").edit_snippet_files, "Open snippets" },
           },
         },
       },

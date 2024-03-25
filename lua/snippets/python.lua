@@ -5,7 +5,8 @@ local t = ls.text_node
 local c = ls.choice_node
 local sn = ls.snippet_node
 
-ls.add_snippets('all', {
+return {
+  -- Create list:
   s('li', {
     t '["',
     i(1),
@@ -13,12 +14,11 @@ ls.add_snippets('all', {
     i(2),
     t ']',
   }),
-})
-
-ls.add_snippets('all', {
+}, {
+  -- Add to list:
   s('i', {
     t ', "',
     i(1),
     t '"',
   }),
-})
+}

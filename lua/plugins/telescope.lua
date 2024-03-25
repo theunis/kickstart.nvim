@@ -1,41 +1,41 @@
 -- Fuzzy Finder (files, lsp, etc)
 local config = function()
-  local telescope = require("telescope")
-  telescope.setup({
+  local telescope = require 'telescope'
+  telescope.setup {
     defaults = {
       mappings = {
         i = {
-          ["<C-u>"] = false,
-          ["<C-d>"] = false,
+          ['<C-u>'] = false,
+          ['<C-d>'] = false,
         },
       },
     },
     pickers = {
       find_files = {
-        theme = "dropdown",
+        theme = 'dropdown',
         hidden = true,
         preview = false,
         no_ignore = true,
       },
       live_grep = {
-        theme = "dropdown",
+        theme = 'dropdown',
         preview = false,
       },
       buffers = {
-        theme = "dropdown",
+        theme = 'dropdown',
         preview = false,
       },
     },
     extensions = {
-      ["ui-select"] = {
-        require("telescope.themes").get_dropdown(),
+      ['ui-select'] = {
+        require('telescope.themes').get_dropdown(),
       },
     },
-  })
+  }
 
-  pcall(require("telescope").load_extension, "fzf")
-  pcall(require("telescope").load_extension, "ui-select")
-  pcall(require("telescope").load_extension, "luasnip")
+  pcall(require('telescope').load_extension, 'fzf')
+  pcall(require('telescope').load_extension, 'ui-select')
+  pcall(require('telescope').load_extension, 'luasnip')
 
   -- Telescope Flutter
   -- require('telescope').load_extension 'Flutter'
@@ -49,17 +49,17 @@ local config = function()
     local current_dir
     local cwd = vim.fn.getcwd()
     -- If the buffer is not associated with a file, return nil
-    if current_file == "" then
+    if current_file == '' then
       current_dir = cwd
     else
       -- Extract the directory from the current file's path
-      current_dir = vim.fn.fnamemodify(current_file, ":h")
+      current_dir = vim.fn.fnamemodify(current_file, ':h')
     end
 
     -- Find the Git root directory from the current file's path
-    local git_root = vim.fn.systemlist("git -C " .. vim.fn.escape(current_dir, " ") .. " rev-parse --show-toplevel")[1]
+    local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
     if vim.v.shell_error ~= 0 then
-      print("Not a git repository. Searching on current working directory")
+      print 'Not a git repository. Searching on current working directory'
       return cwd
     end
     return git_root
@@ -69,37 +69,37 @@ local config = function()
   local function live_grep_git_root()
     local git_root = find_git_root()
     if git_root then
-      require("telescope.builtin").live_grep({
+      require('telescope.builtin').live_grep {
         search_dirs = { git_root },
-      })
+      }
     end
   end
 
-  vim.api.nvim_create_user_command("LiveGrepGitRoot", live_grep_git_root, {})
+  vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 end
 
-local telescope_builtin = require("telescope.builtin")
+local telescope_builtin = require 'telescope.builtin'
 
 return {
-  "nvim-telescope/telescope.nvim",
-  branch = "0.1.x",
+  'nvim-telescope/telescope.nvim',
+  branch = '0.1.x',
   lazy = false,
   dependencies = {
-    "nvim-lua/plenary.nvim",
+    'nvim-lua/plenary.nvim',
     -- Fuzzy Finder Algorithm which requires local dependencies to be built.
     -- Only load if `make` is available. Make sure you have the system
     -- requirements installed.
     {
-      "nvim-telescope/telescope-fzf-native.nvim",
+      'nvim-telescope/telescope-fzf-native.nvim',
       -- NOTE: If you are having trouble with this installation,
       --       refer to the README for telescope-fzf-native for more instructions.
-      build = "make",
+      build = 'make',
       cond = function()
-        return vim.fn.executable("make") == 1
+        return vim.fn.executable 'make' == 1
       end,
     },
-    { "benfowler/telescope-luasnip.nvim" },
-    { "nvim-telescope/telescope-ui-select.nvim" },
+    { 'benfowler/telescope-luasnip.nvim' },
+    { 'nvim-telescope/telescope-ui-select.nvim' },
   },
   config = config,
   keys = {
