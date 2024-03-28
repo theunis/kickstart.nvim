@@ -3,3 +3,4 @@ test.sh
 .luarc.json
 nvim
 tmux-*
+.DS_Store

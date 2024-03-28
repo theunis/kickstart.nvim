@@ -5,9 +5,14 @@ https://github.com/kdheepak/kickstart.nvim/assets/1813121/f3ff9a2b-c31f-44df-a4f
 ## Troubleshooting
 
 To get image-nvim working, install magick, pkg-config, luarocks and lua magick:
-```
+```bash
 brew install magick luarocks pkg-config
 luarocks --local --lua-version=5.1 install magick
+```
+
+If any issues with Pyright not working, install `npm`:
+```bash
+brew install npm
 ```
 
 ### Introduction

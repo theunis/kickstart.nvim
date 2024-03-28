@@ -105,16 +105,30 @@ return {
       vim.cmd("normal! j")
     end
 
-    -- Define the function to create a new .qmd scratch file
     local function create_qmd_scratch_file()
       local datetime = os.date("%Y-%m-%d_%H-%M-%S")
-      local filepath = vim.fn.expand("~/notebooks/dev/dev-") .. datetime .. ".qmd"
+      local filepath = vim.fn.expand("./notebooks/dev/dev-") .. datetime .. ".qmd"
+      local template_path = vim.fn.expand("./notebooks/dev/dev-template.qmd")
+
       -- Ensure the directory exists
-      vim.fn.mkdir(vim.fn.expand("~/notebooks/dev/"), "p")
+      vim.fn.mkdir(vim.fn.expand("./notebooks/dev/"), "p")
+
+      -- Copy the template file to the new file with datetime in its name
+      vim.fn.system({ "cp", template_path, filepath })
+
       -- Open the new file
       vim.cmd("edit " .. filepath)
     end
 
+    local function quarto_conditional(command, otter_func)
+      return function()
+        if vim.bo.filetype == "quarto" or vim.bo.filetype == "qmd" then
+          require("otter")[otter_func]()
+        else
+          vim.cmd(command)
+        end
+      end
+    end
     -- General keybindings
     local mappings = {
       ["<S-CR>"] = { execute_code_block_and_move, "Execute code block and move to next" },
@@ -196,16 +210,16 @@ return {
         g = {
           name = "Go",
           F = { "<Cmd>Lspsaga finder<CR>", "Finder" },
-          d = { "<Cmd>Lspsaga peek_definition<CR>", "Peek Definition" },
-          D = { "<Cmd>Lspsaga goto_definition<CR>", "Goto Definition" },
-          h = { "<Cmd>Lspsaga hover_doc<CR>", "Hover Doc" },
+          d = { quarto_conditional("Lspsaga peek_definition", "ask_definition"), "Peek/Ask Definition" },
+          D = { quarto_conditional("Lspsaga goto_definition", "ask_definition"), "Goto/Ask Definition" },
+          h = { quarto_conditional("Lspsaga hover_doc", "ask_hover"), "Hover Doc/Ask Hover" },
         },
         -- LSP
         l = {
           name = "LSP",
           -- n = { '<Cmd>lua vim.diagnostic.goto_next()<CR>', 'Next Diagnostic' },
           -- p = { '<Cmd>lua vim.diagnostic.goto_prev()<CR>', 'Previous Diagnostic' },
-          a = { "<Cmd>Lspsaga code_action<CR>", "Code Action" },
+          a = { quarto_conditional("Lspsaga code_action", "ask_code_action"), "Code Action" },
           c = { "<Cmd>Lspsaga show_cursor_diagnostics<CR>", "Cursor Diagnostics" },
           C = { "<Cmd>Lspsaga show_line_diagnostics<CR>", "Line Diagnostics" },
           d = { "<cmd>lua require('trouble').toggle('document_diagnostics')<cr>", "Document Diagnostics" },
@@ -217,7 +231,7 @@ return {
           o = { "<Cmd>lua vim.diagnostic.setloclist()<CR>", "Diagnostic List" },
           p = { "<Cmd>Lspsaga diagnostic_jump_prev<CR>", "Prev Diagnostic" },
           q = { "<cmd>lua require('trouble').toggle('quickfix')<cr>", "Quickfix" },
-          r = { "<Cmd>Lspsaga rename<CR>", "Rename" },
+          r = { quarto_conditional("Lspsaga rename", "ask_rename"), "Rename" },
           w = { "<cmd>lua require('trouble').toggle('workspace_diagnostics')<cr>", "Workspace Diagnostics" },
         },
         -- Search & Quick Access
