@@ -59,6 +59,7 @@ return {
 
       -- sources for autocompletion
       sources = cmp.config.sources {
+        { name = 'jupyter' },
         { name = 'otter' },
         { name = 'path' }, -- file system paths
         { name = 'nvim_lsp' }, -- lsp
