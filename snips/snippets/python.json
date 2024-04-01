@@ -6,13 +6,6 @@
 		],
 		"description": "Anonymous function"
 	},
-	"Altair Chart": {
-		"prefix": "ac",
-		"body": [
-      "alt.Chart($1).mark_$2().encode($3)"
-    ],
-		"description": "Altair Chart"
-	},
 	"Altair Repeat Column": {
 		"prefix": "arc",
 		"body": [

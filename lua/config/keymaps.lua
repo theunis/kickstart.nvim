@@ -33,6 +33,8 @@ keymap.set("t", "<C-`>", '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
 
 keymap.set("i", "<C-;>", "<Esc>la") -- Move one left
 
+keymap.set("i", "<C-u>", "<cmd>lua require('luasnip.extras.select_choice')()<CR>")
+
 -- Move between windows with Ctrl+h/j/k/l inside terminal
 vim.api.nvim_set_keymap("t", "<C-h>", [[<C-\><C-n><C-w>h]], { noremap = true })
 vim.api.nvim_set_keymap("t", "<C-j>", [[<C-\><C-n><C-w>j]], { noremap = true })

@@ -42,17 +42,16 @@ return {
           end
         end, { 'i', 's' }),
 
-        -- Select the next choice in a choice node
-        ['<C-n'] = cmp.mapping(function()
-          if luasnip.choice_active() then
-            luasnip.change_choice(1)
-          end
-        end, { 'i', 's' }),
-
         -- Select the previous choice in a choice node
         ['<C-p>'] = cmp.mapping(function()
           if luasnip.choice_active() then
             luasnip.change_choice(-1)
+          end
+        end, { 'i', 's' }),
+        -- Select the next choice in a choice node
+        ['<C-n>'] = cmp.mapping(function()
+          if luasnip.choice_active() then
+            luasnip.change_choice(1)
           end
         end, { 'i', 's' }),
       },
@@ -68,6 +67,7 @@ return {
         { name = 'buffer' }, -- text within current buffer
         { name = 'treesitter' },
         { name = 'tags' },
+        { name = 'copilot' }, --, group_index = 2 },
       },
       -- configure lspkind for vs-code like icons
       formatting = {
@@ -76,6 +76,8 @@ return {
           mode = 'symbol_text',
           maxwidth = 60,
           menu = {
+            otter = '🦦',
+            jupyter = '🪐',
             nvim_lsp = '',
             buffer = '﬘',
             luasnip = '',
@@ -84,12 +86,13 @@ return {
             tags = '',
             cmdline = 'גּ',
             latex_symbols = '',
+            Copilot = '',
           },
         },
       },
     }
     -- for custom snippets
-    require('luasnip.loaders.from_lua').load { paths = '~/.config/nvim/lua/snippets' }
+    require('luasnip.loaders.from_lua').load { paths = '~/.config/nvim/lua/snippets/' }
     require('luasnip.loaders.from_vscode').load { paths = { '~/.config/nvim/snips' } }
     -- require("luasnip.loaders.from_vscode").lazy_load({ paths = { vim.fn.stdpath("config") .. "/snips" } })
     luasnip.filetype_extend('quarto', { 'python' })

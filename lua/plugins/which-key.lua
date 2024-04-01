@@ -20,15 +20,19 @@ return {
 
       -- Command to create the tmux session and run browser-sync
       local create_session_cmd =
-        "tmux new-session -d -s altairchart 'cd ~/html/ && browser-sync start --server --files \"*.html\"'"
+        "tmux new-session -d -s altairchart 'cd ~/html/ && browser-sync start --server --no-open --files \"*.html\"'"
 
       -- Check if the 'browsersync' session already exists
       if os.execute(check_session_cmd) ~= 0 then
         -- The session does not exist, create it and run the command
         os.execute(create_session_cmd)
+        os.execute("'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --app='http://localhost:3000'")
       else
         -- The session exists, do nothing
         print("Tmux session 'altairchart' already exists.")
+
+        print("Opening Chrome")
+        os.execute("'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --app='http://localhost:3000'")
       end
     end
 
@@ -129,6 +133,14 @@ return {
         end
       end
     end
+
+    local function create_tmux_pane(command)
+      -- Create new vertical split and get the pane id
+      local pane_id = vim.fn.system("tmux split-window -v -P -F '#{pane_id}' '" .. command .. "'")
+      -- Use the pane id to set the vim-slime target pane
+      vim.g.slime_default_config = { socket_name = "default", target_pane = pane_id }
+    end
+
     -- General keybindings
     local mappings = {
       ["<S-CR>"] = { execute_code_block_and_move, "Execute code block and move to next" },
@@ -299,11 +311,25 @@ return {
             name = "Terminal",
             b = { start_browser_sync, "Start browser-sync on ~/html", silent = true },
             -- i = { ":split term://ipython --profile terminal<CR>", "IPython Terminal" },
-            i = { ":silent !tmux split-window -v 'ipython --profile terminal'<CR>", "IPython Terminal" },
+            -- I = { ":silent !tmux split-window -v 'ipython --profile terminal'<CR>", "IPython Terminal" },
+            -- i = { ":silent !tmux split-window -v 'jupyter console'<CR>", "Jupyter Console" },
+            I = {
+              function()
+                create_tmux_pane("ipython --profile terminal")
+              end,
+              "IPython Terminal",
+            },
+            i = {
+              function()
+                create_tmux_pane("jupyter console")
+              end,
+              "Jupyter Console",
+            },
             j = { ":split term://julia<CR>", "Julia Terminal" },
             p = { ":split term://python<CR>", "Python Terminal" },
             r = { ":split term://R<CR>", "R Terminal" },
             t = { '<Cmd>lua require("FTerm").toggle()<CR>', "Toggle Terminal (Ctrl-`)" },
+            v = { ":!tmux split-window -t 1 -h '~/dotfiles/df_explorer.sh'<CR>", "DataFrame Explorer" },
           },
           c = {
             name = "Github Copilot",
