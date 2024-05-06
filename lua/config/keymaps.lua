@@ -32,6 +32,7 @@ keymap.set("n", "<C-`>", '<CMD>lua require("FTerm").toggle()<CR>')
 keymap.set("t", "<C-`>", '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
 
 keymap.set("i", "<C-;>", "<Esc>la") -- Move one left
+keymap.set("n", "gp", "'[v']")
 
 keymap.set("i", "<C-u>", "<cmd>lua require('luasnip.extras.select_choice')()<CR>")
 

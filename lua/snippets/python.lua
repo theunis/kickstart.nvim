@@ -42,7 +42,7 @@ return {
   altitem("acy", "y", "Y"),
   altitem("acx2", "x2", "X"),
   altitem("acy2", "y2", "Y2"),
-  altitem("acc", "colour", "Colour"),
+  altitem("acc", "color", "Color"),
   altitem("acf", "fill", "Fill"),
   altitem("acs", "size", "Size"),
   altitem("act", "text", "Text"),

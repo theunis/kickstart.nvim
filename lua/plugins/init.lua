@@ -38,4 +38,8 @@ return {
       require("block").setup({})
     end,
   },
+  {
+    "unblevable/quick-scope",
+    lazy = false,
+  },
 }

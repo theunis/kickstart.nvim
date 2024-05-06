@@ -109,6 +109,18 @@ return {
       vim.cmd("normal! j")
     end
 
+    local function feedkeys(key, mode)
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+    end
+
+    local function add_python_block_below()
+      feedkeys("k][jo<esc>", "n")
+      vim.api.nvim_set_current_line("```{python}")
+      feedkeys("o", "n")
+      vim.api.nvim_set_current_line("```")
+      feedkeys("kO", "n")
+    end
+
     local function create_qmd_scratch_file()
       local datetime = os.date("%Y-%m-%d_%H-%M-%S")
       local filepath = vim.fn.expand("./notebooks/dev/dev-") .. datetime .. ".qmd"
@@ -134,9 +146,11 @@ return {
       end
     end
 
-    local function create_tmux_pane(command)
+    local function create_tmux_pane(command, perc_height)
+      perc_height = perc_height or 50
       -- Create new vertical split and get the pane id
-      local pane_id = vim.fn.system("tmux split-window -v -P -F '#{pane_id}' '" .. command .. "'")
+      local pane_id =
+        vim.fn.system("tmux split-window -v -P -F '#{pane_id}' -l '" .. perc_height .. "%' '" .. command .. "'")
       -- Use the pane id to set the vim-slime target pane
       vim.g.slime_default_config = { socket_name = "default", target_pane = pane_id }
     end
@@ -152,12 +166,12 @@ return {
         ["["] = {
           name = "Previous",
           d = { "<Cmd>lua vim.diagnostic.goto_prev()<CR>", "Diagnostic" },
-          c = { "<Cmd>MoltenPrev<CR>", "Code chunk" },
+          -- c = { "<Cmd>MoltenPrev<CR>", "Code chunk" },
         },
         ["]"] = {
           name = "Next",
           d = { "<Cmd>lua vim.diagnostic.goto_next()<CR>", "Diagnostic" },
-          c = { "<Cmd>MoltenNext<CR>", "Code chunk" },
+          -- c = { "<Cmd>MoltenNext<CR>", "Code chunk" },
         },
         -- File & Project Management
         b = {
@@ -288,9 +302,9 @@ return {
           A = { "O# %%<cr>", "New code chunk above" },
           b = { "o```{bash}<cr>```<esc>O", "Bash code chunk" },
           r = { "o```{r}<cr>```<esc>O", "R code chunk" },
-          p = { "o```{python}<cr>```<esc>O", "Python code chunk" },
-          o = { "k][jo```{python}<cr>```<esc>O", "Python code chunk below" },
-          O = { "j[]kko```{python}<cr>```<esc>O", "Python code chunk above" },
+          p = { "o```{python}<cr>```<cr><esc>kO", "Python code chunk" },
+          o = { add_python_block_below, "Python code chunk below" },
+          O = { "j[]kko```{python}<cr>```<cr><esc>O", "Python code chunk above", noremap = true },
           ["-"] = { "o```<cr><cr>```{python}<esc>kkk", "Split cell" },
         },
 
@@ -315,13 +329,16 @@ return {
             -- i = { ":silent !tmux split-window -v 'jupyter console'<CR>", "Jupyter Console" },
             I = {
               function()
-                create_tmux_pane("ipython --profile terminal")
+                create_tmux_pane("ipython --profile terminal", 30)
               end,
               "IPython Terminal",
             },
             i = {
               function()
-                create_tmux_pane("jupyter console")
+                create_tmux_pane(
+                  "source venv/bin/activate && jupyter console --kernel=$(basename $(dirname $VIRTUAL_ENV))",
+                  30
+                )
               end,
               "Jupyter Console",
             },
