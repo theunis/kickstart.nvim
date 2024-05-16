@@ -173,6 +173,7 @@ return {
           d = { "<Cmd>lua vim.diagnostic.goto_next()<CR>", "Diagnostic" },
           -- c = { "<Cmd>MoltenNext<CR>", "Code chunk" },
         },
+        x = { "<Cmd>ObsidianToggleCheckbox<CR>", "Toggle checkbox" },
         -- File & Project Management
         b = {
           name = "Buffer",
@@ -269,6 +270,8 @@ return {
           n = { "<Cmd>Telescope luasnip<CR>", "Snippets" },
           h = { "<Cmd>Telescope help_tags<CR>", "Help Tags" },
           k = { "<Cmd>Telescope keymaps<CR>", "Keymaps" },
+          o = { "<Cmd>ObsidianQuickSwitch<CR>", "Obsidian notes" },
+          O = { "<Cmd>ObsidianSearch<CR>", "Obsidian search" },
           t = { "<Cmd>Telescope builtin<CR>", "Telescope" },
           w = { "<Cmd>Telescope grep_string<CR>", "Grep Word" },
           d = { "<Cmd>Telescope diagnostics<CR>", "Diagnostics" },
@@ -321,6 +324,7 @@ return {
           name = "Tools",
           u = { "<Cmd>UndotreeToggle<CR>", "Undo Tree" },
           a = { "<Cmd>AerialToggle!<CR>", "Aerial Outline" },
+          l = { "<Cmd>Twilight<CR>", "Twilight" },
           t = {
             name = "Terminal",
             b = { start_browser_sync, "Start browser-sync on ~/html", silent = true },
@@ -351,51 +355,69 @@ return {
           c = {
             name = "Github Copilot",
             c = { '<Cmd>lua require"copilot".complete()<CR>', "Complete" },
-            s = { '<Cmd>lua require"copilot".suggest()<CR>', "Suggest" },
             d = { "<Cmd>Copilot disable<CR>", "Disable" },
             e = { "<Cmd>Copilot enable<CR>", "Enable" },
+            s = { '<Cmd>lua require"copilot".suggest()<CR>', "Suggest" },
           },
           m = {
             name = "Molten",
-            i = { "<Cmd>MoltenInit<CR>", "Molten" },
-            e = { "<Cmd>MoltenEvaluateLine<CR>", "Evaluate Line" },
+            d = { "<Cmd>MoltenDelete<CR>", "Delete Cell", noremap = true, silent = true },
             b = { "<Cmd>MoltenEvaluateOperator<CR>", "Run operator selection" },
             c = { "<Cmd>MoltenReevaluateCell<CR>", "Re-evaluate cell" },
-            t = { "<Cmd>MoltenToggle<CR>", "Toggle Display" },
-            d = { "<Cmd>MoltenDelete<CR>", "Delete Cell", noremap = true, silent = true },
+            e = { "<Cmd>MoltenEvaluateLine<CR>", "Evaluate Line" },
             h = { "<Cmd>MoltenHideOutput<CR>", "Hide Output", noremap = true, silent = true },
-            s = { "<Cmd>noautocmd MoltenEnterOutput<CR>", "Show/Enter Output", noremap = true, silent = true },
+            i = { "<Cmd>MoltenInit<CR>", "Molten" },
             r = { "<Cmd>MoltenOpenInBrowser<CR>", "Open in Browser" },
+            s = { "<Cmd>noautocmd MoltenEnterOutput<CR>", "Show/Enter Output", noremap = true, silent = true },
+            t = { "<Cmd>MoltenToggle<CR>", "Toggle Display" },
           },
           f = {
             name = "Flutter",
             c = { "<Cmd>Telescope flutter commands<CR>", "Flutter" },
-            r = { "<Cmd>FlutterRun<CR>", "Run" },
             d = { "<Cmd>FlutterDevices<CR>", "Devices" },
             e = { "<Cmd>FlutterEmulators<CR>", "Emulators" },
             l = { "<Cmd>FlutterReload<CR>", "Hot Reload" },
             s = { "<Cmd>FlutterRestart<CR>", "Hot Restart" },
             t = { "<Cmd>FlutterTest<CR>", "Run Tests" },
+            r = { "<Cmd>FlutterRun<CR>", "Run" },
           },
           g = {
             name = "Git",
-            s = { "<Cmd>Telescope git_status<CR>", "Status" },
-            c = { "<Cmd>Telescope git_commits<CR>", "Commits" },
             b = { "<Cmd>Telescope git_branches<CR>", "Branches" },
+            c = { "<Cmd>Telescope git_commits<CR>", "Commits" },
             f = { "<Cmd>Telescope git_files<CR>", "Files" },
             g = { "<Cmd>Git<CR>", "Git" },
+            s = { "<Cmd>Telescope git_status<CR>", "Status" },
           },
           s = {
             name = "Neotest",
+            a = { ":lua require('neotest').run.run({ suite = true })<CR>", "Run All Tests" },
+            d = { ":lua require('neotest').run.run({strategy = 'dap'})", "Debug Test" },
             n = { ":lua require('neotest').run.run()<CR>", "Run Nearest Test" },
             f = { ":lua require('neotest').run.run(vim.fn.expand('%'))<CR>", "Run Tests in File" },
-            l = { ":lua require('neotest').run.run_last()<CR>", "Run Last Test" },
-            a = { ":lua require('neotest').run.run({ suite = true })<CR>", "Run All Tests" },
-            s = { ":lua require('neotest').summary.toggle()<CR>", "Toggle Summary" },
-            o = { ":lua require('neotest').output.open()<CR>", "Open Output" },
             j = { ":lua require('neotest').diagnostic.goto_next()<CR>", "Next Failed Test" },
             k = { ":lua require('neotest').diagnostic.goto_prev()<CR>", "Previous Failed Test" },
-            d = { ":lua require('neotest').run.run({strategy = 'dap'})", "Debug Test" },
+            l = { ":lua require('neotest').run.run_last()<CR>", "Run Last Test" },
+            o = { ":lua require('neotest').output.open()<CR>", "Open Output" },
+            s = { ":lua require('neotest').summary.toggle()<CR>", "Toggle Summary" },
+          },
+          o = {
+            name = "Obsidian",
+            ["#"] = { "<Cmd>ObsidianTags<CR>", "Tags" },
+            b = { "<Cmd>ObsidianBacklinks<CR>", "Backlinks" },
+            d = { "<Cmd>ObsidianDailies<CR>", "Dailies" },
+            f = { "<Cmd>ObsidianFollowLink<CR>", "Follow link" },
+            F = { "<Cmd>ObsidianFollowLink vsplit<CR>", "Follow link in vertical split" },
+            g = { "<Cmd>ObsidianToggleCheckbox<CR>", "Toggle checkbox" },
+            i = { "<Cmd>ObsidianPasteImg<CR>", "Paste image" },
+            L = { "<Cmd>ObsidianLinks<CR>", "Links in current buffer" },
+            m = { "<Cmd>ObsidianTomorrow<CR>", "Tomorrow's note" },
+            n = { "<Cmd>ObsidianNew<CR>", "New note" },
+            o = { "<Cmd>ObsidianOpen<CR>", "Open in Obsidian" },
+            t = { "<Cmd>ObsidianToday<CR>", "Today's note" },
+            T = { "<Cmd>ObsidianTemplate<CR>", "Insert template" },
+            y = { "<Cmd>ObsidianYesterday<CR>", "Yesterday's note" },
+            w = { "<Cmd>ObsidianWorkspace<CR>", "Switch workspace" },
           },
         },
 
@@ -421,6 +443,7 @@ return {
             t = { toggle_light_dark_theme, "Switch theme" },
             s = { require("luasnip.loaders").edit_snippet_files, "Open snippets" },
           },
+          z = { "<Cmd>ZenMode<CR>", "Zen Mode" },
         },
       },
       -- Additional keybind outside of leader key
@@ -437,6 +460,19 @@ return {
       },
     }
 
+    local mappings_visual = {
+      ["<leader>"] = {
+        t = {
+          name = "Tools",
+          o = {
+            name = "Obsidian",
+            e = { "<Cmd>ObsidianExtractNote<CR>", "Extract text and create note" },
+            l = { "<Cmd>ObsidianLink<CR>", "Insert link" },
+            N = { "<Cmd>ObsidianLinkNew<CR>", "Insert link and create new note" },
+          },
+        },
+      },
+    }
     local is_code_chunk = function()
       local current, _ = require("otter.keeper").get_current_language_context()
       if current then
@@ -488,5 +524,6 @@ return {
 
     -- Register the mappings with which-key
     wk.register(mappings)
+    wk.register(mappings_visual, { mode = "v" })
   end,
 }

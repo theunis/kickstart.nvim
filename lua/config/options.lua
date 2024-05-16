@@ -45,6 +45,9 @@ opt.encoding = "UTF-8"
 opt.breakindent = true
 opt.signcolumn = "yes"
 
+-- Conceal level
+opt.conceallevel = 1
+
 -- Decrease update time
 opt.updatetime = 250
 opt.timeoutlen = 300

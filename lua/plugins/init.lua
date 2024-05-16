@@ -42,4 +42,12 @@ return {
     "unblevable/quick-scope",
     lazy = false,
   },
+  {
+    "folke/zen-mode.nvim",
+    lazy = false,
+  },
+  {
+    "folke/twilight.nvim",
+    lazy = false,
+  },
 }

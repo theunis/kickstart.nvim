@@ -114,6 +114,24 @@
       "dropna($1)"
     ]
   },
+  "Pandas Agg": {
+    "prefix": "pag",
+    "body": [
+      "agg($1=(\"$2\", \"$3\"))"
+    ]
+  },
+  "Spark Column": {
+    "prefix": "sfc",
+    "body": [
+      "sf.col(\"$1\")"
+    ]
+  },
+  "Spark withColumn": {
+    "prefix": "swc",
+    "body": [
+      "withColumn(\"$1\", $2)"
+    ]
+  },
   "Create list of strings": {
     "prefix": "li",
     "body": [
