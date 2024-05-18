@@ -31,7 +31,7 @@ return {
     vim.o.foldlevelstart = 99
     vim.o.foldenable = true
     require('ufo').setup {
-      close_fold_kinds = { 'imports' },
+      close_fold_kinds_for_ft = { default = { default = { 'imports' } } },
     }
   end,
 }

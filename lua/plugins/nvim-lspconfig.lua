@@ -34,8 +34,9 @@ local config = function()
         workspace = {
           -- make language server aware of runtime files
           library = {
-            [vim.fn.expand '$VIMRUNTIME/lua'] = true,
-            [vim.fn.stdpath 'config' .. '/lua'] = true,
+            -- THIS MAKES IT BREAK in 0.10.0:
+            -- [vim.fn.expand '$VIMRUNTIME/lua'] = true,
+            -- [vim.fn.stdpath 'config' .. '/lua'] = true,
           },
         },
       },
