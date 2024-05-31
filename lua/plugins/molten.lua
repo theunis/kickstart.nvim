@@ -8,8 +8,9 @@ return {
     vim.g.molten_image_provider = "image.nvim"
     vim.g.molten_output_win_max_height = 20
     -- vim.g.molten_auto_open_output = false
-    -- vim.g.molten_virt_text_output = true
+    vim.g.molten_virt_text_output = true
     vim.g.molten_virt_lines_off_by_1 = true
+    vim.g.molten_virt_text_max_lines = 2
     vim.g.molten_enter_output_behavior = "open_and_enter"
     -- vim.keymap.set('n', '<localleader>rd', ':MoltenDelete<CR>', { silent = true, noremap = true, desc = 'molten delete cell' })
     -- vim.keymap.set('n', '<localleader>oh', ':MoltenHideOutput<CR>', { silent = true, noremap = true, desc = 'hide output' })
