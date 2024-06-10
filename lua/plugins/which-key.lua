@@ -450,10 +450,16 @@ return {
             },
             i = {
               function()
-                create_tmux_pane(
-                  "source venv/bin/activate && jupyter console --kernel=$(basename $(dirname $VIRTUAL_ENV))",
-                  30
-                )
+                local bufnr = vim.api.nvim_get_current_buf()
+                local connection_file = require("jupyter_connection").get_connection_file(bufnr)
+                if connection_file then
+                  create_tmux_pane("source venv/bin/activate && jupyter console --existing " .. connection_file, 30)
+                else
+                  create_tmux_pane(
+                    "source venv/bin/activate && jupyter console --kernel=$(basename $(dirname $VIRTUAL_ENV))",
+                    30
+                  )
+                end
               end,
               "Jupyter Console",
             },
@@ -475,7 +481,7 @@ return {
             b = { "<Cmd>MoltenEvaluateOperator<CR>", "Run operator selection" },
             c = { "<Cmd>MoltenReevaluateCell<CR>", "Re-evaluate cell" },
             d = { "<Cmd>MoltenDelete<CR>", "Delete Cell", noremap = true, silent = true },
-            D = { "<Cmd>MoltenDeInit<CR>", "Molten" },
+            D = { "<Cmd>MoltenDeinit<CR>", "Molten Deinit" },
             e = { "<Cmd>MoltenEvaluateLine<CR>", "Evaluate Line" },
             h = { "<Cmd>MoltenHideOutput<CR>", "Hide Output", noremap = true, silent = true },
             H = { "<Cmd>MoltenShowOutput<CR>", "Show Output" },
@@ -486,7 +492,8 @@ return {
               noremap = true,
               silent = true,
             },
-            I = { "<Cmd>MoltenInit<CR>", "Molten" },
+            -- I = { "<Cmd>MoltenInit<CR>", "Molten Init" },
+            I = { "<Cmd>MoltenInterrupt<CR>", "Molten Interrupt" },
             n = { "<Cmd>MoltenInfo<CR>", "Molten Info" },
             r = { "<Cmd>MoltenOpenInBrowser<CR>", "Open in Browser" },
             s = { "<Cmd>MoltenSave<CR>", "Save output to json" },
@@ -631,6 +638,28 @@ return {
       ["<m-i>"] = { insert_r_chunk, "R code chunk" },
       ["<cm-i>"] = { insert_py_chunk, "Python code chunk" },
       ["<m-I>"] = { insert_py_chunk, "Python code chunk" },
+      ["<C-p>"] = {
+        function()
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes("[[", true, false, true), "x")
+          local current_pos = vim.api.nvim_win_get_cursor(0)
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes("]]", true, false, true), "x")
+          local new_pos = vim.api.nvim_win_get_cursor(0)
+          if current_pos[1] < new_pos[1] then
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("[[", true, false, true), "x")
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("[[", true, false, true), "x")
+          else
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("[[", true, false, true), "x")
+          end
+          vim.cmd("normal! j")
+        end,
+        "Previous code chunk",
+      },
+      ["<C-n>"] = {
+        function()
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes("]]j", true, false, true), "")
+        end,
+        "Next code chunk",
+      },
     }, { mode = "n" }) -- Normal mode
 
     wk.register({
