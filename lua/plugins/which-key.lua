@@ -234,8 +234,132 @@ return {
       -- Create new vertical split and get the pane id
       local pane_id =
         vim.fn.system("tmux split-window -v -P -F '#{pane_id}' -l '" .. perc_height .. "%' '" .. command .. "'")
+
+      -- Check if the pane_id was successfully retrieved
+      if pane_id == "" then
+        return false
+      end
+
       -- Use the pane id to set the vim-slime target pane
       vim.g.slime_default_config = { socket_name = "default", target_pane = pane_id }
+
+      return true
+    end
+
+    local function open_jupyter_console()
+      local bufnr = vim.api.nvim_get_current_buf()
+      local connection_file = require("jupyter_connection").get_connection_file(bufnr)
+      local cmd
+
+      -- Function to determine if Poetry is being used
+      local function is_poetry_venv()
+        local handle = io.popen("poetry env info -p 2>/dev/null")
+        if handle then
+          local result = handle:read("*a")
+          handle:close()
+          return #result > 0
+        else
+          return false
+        end
+      end
+
+      -- Determine the type of environment
+      local poetry_venv = is_poetry_venv()
+      local standard_venv = vim.env.VIRTUAL_ENV and #vim.env.VIRTUAL_ENV > 0
+      local dot_venv = vim.fn.isdirectory(".venv") == 1
+
+      if poetry_venv then
+        vim.notify("Detected poetry env...", vim.log.levels.INFO)
+      elseif standard_venv then
+        vim.notify("Detected venv...", vim.log.levels.INFO)
+      elseif dot_venv then
+        vim.notify("Detected .venv...", vim.log.levels.INFO)
+      else
+        vim.notify("No env detected...", vim.log.levels.WARN)
+      end
+
+      if connection_file then
+        cmd = "jupyter console --existing " .. connection_file
+        vim.notify("Opening Jupyter console with existing connection file...", vim.log.levels.INFO)
+      else
+        if poetry_venv then
+          local handle = io.popen("poetry run jupyter kernelspec list")
+          if handle then
+            local result = handle:read("*a")
+            handle:close()
+            local kernel = vim.fn.fnamemodify(result, ":t")
+            if result:find(kernel) then
+              cmd = "poetry run jupyter console --kernel=" .. kernel
+            else
+              vim.notify("Kernel '" .. kernel .. "' does not exist in Poetry environment.", vim.log.levels.ERROR)
+              return
+            end
+          else
+            vim.notify("Failed to check Jupyter kernels in Poetry environment.", vim.log.levels.ERROR)
+            return
+          end
+        elseif dot_venv then
+          -- Get the directory where the virtual environment is located
+          local venv_path = vim.fn.fnamemodify(".venv", ":p:h:h")
+          -- Get the basename of that directory
+          local kernel = vim.fn.fnamemodify(venv_path, ":t")
+
+          local handle = io.popen(".venv/bin/jupyter kernelspec list")
+          if handle then
+            local result = handle:read("*a")
+            handle:close()
+            if result:find(kernel) then
+              cmd = ".venv/bin/jupyter console --kernel=" .. kernel
+            else
+              vim.notify("Kernel '" .. kernel .. "' does not exist in .venv.", vim.log.levels.ERROR)
+              return
+            end
+          else
+            vim.notify("Failed to check Jupyter kernels in .venv.", vim.log.levels.ERROR)
+            return
+          end
+        elseif standard_venv then
+          -- Get the directory where the virtual environment is located
+          local venv_path = vim.fn.fnamemodify(vim.env.VIRTUAL_ENV, ":p:h:h")
+          -- Get the basename of that directory
+          local kernel = vim.fn.fnamemodify(venv_path, ":t")
+
+          local handle = io.popen("jupyter kernelspec list")
+          if handle then
+            local result = handle:read("*a")
+            handle:close()
+            -- if result:find(kernel) then
+            cmd = "source " .. vim.env.VIRTUAL_ENV .. "/bin/activate && jupyter console --kernel=" .. kernel
+            -- else
+            --   vim.notify(
+            --     "Kernel '" .. kernel .. "' does not exist in standard virtual environment.",
+            --     vim.log.levels.ERROR
+            --   )
+            --   return
+            -- end
+          else
+            vim.notify("Failed to check Jupyter kernels in standard virtual environment.", vim.log.levels.ERROR)
+            return
+          end
+        else
+          vim.notify("No virtual environment detected. Please activate your environment.", vim.log.levels.ERROR)
+          return
+        end
+      end
+
+      -- Check if create_tmux_pane is available
+      if not create_tmux_pane then
+        vim.notify("create_tmux_pane function is not available. Please check your setup.", vim.log.levels.ERROR)
+        return
+      end
+
+      -- Execute the command in a tmux pane
+      local success = create_tmux_pane(cmd, 30)
+      if success then
+        vim.notify("Jupyter console opened successfully in a new tmux pane.", vim.log.levels.INFO)
+      else
+        vim.notify("Failed to open Jupyter console in a new tmux pane.", vim.log.levels.ERROR)
+      end
     end
 
     -- General keybindings
@@ -449,18 +573,7 @@ return {
               "Jupyter Console (basename)",
             },
             i = {
-              function()
-                local bufnr = vim.api.nvim_get_current_buf()
-                local connection_file = require("jupyter_connection").get_connection_file(bufnr)
-                if connection_file then
-                  create_tmux_pane("source venv/bin/activate && jupyter console --existing " .. connection_file, 30)
-                else
-                  create_tmux_pane(
-                    "source venv/bin/activate && jupyter console --kernel=$(basename $(dirname $VIRTUAL_ENV))",
-                    30
-                  )
-                end
-              end,
+              open_jupyter_console,
               "Jupyter Console",
             },
             j = { ":split term://julia<CR>", "Julia Terminal" },
