@@ -6,6 +6,7 @@ local config = function()
       'c',
       'html',
       'json',
+      'jsonc',
       'lua',
       'luadoc',
       'luap',
