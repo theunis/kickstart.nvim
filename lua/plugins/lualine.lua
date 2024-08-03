@@ -14,6 +14,23 @@ return {
   lazy = false,
   config = function()
     local lualine = require 'lualine'
+    local code_companion = require 'lualine-custom'
+
+    -- -- Define a function to check that ollama is installed and working
+    -- local function get_condition()
+    --   return package.loaded['ollama'] and require('ollama').status ~= nil
+    -- end
+    --
+    -- -- Define a function to check the status and return the corresponding icon
+    -- local function get_status_icon()
+    --   local status = require('ollama').status()
+    --
+    --   if status == 'IDLE' then
+    --     return '󱙺' -- nf-md-robot-outline
+    --   elseif status == 'WORKING' then
+    --     return '󰚩' -- nf-md-robot
+    --   end
+    -- end
 
     local opts = {
       options = {
@@ -44,7 +61,10 @@ return {
             end,
             color = { fg = '#f5e0dc' },
           },
-          'aerial',
+          code_companion,
+          -- 'aerial',
+          -- get_status_icon,
+          -- get_condition,
           'g:flutter_tools_decorations.app_version',
           'g:flutter_tools_decorations.device',
           'encoding',

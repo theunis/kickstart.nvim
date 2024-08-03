@@ -387,26 +387,11 @@ return {
       { '<leader>bk', '<Cmd>bd<CR>', desc = 'Kill Buffer' },
       { '<leader>bl', '<Cmd>ls<CR>', desc = 'List Buffers' },
 
-      -- ChatGPT keybindings
-      { '<leader>c', group = 'ChatGPT' },
-      { '<leader>cc', '<cmd>ChatGPT<CR>', desc = 'ChatGPT' },
-      { '<leader>ce', '<cmd>ChatGPTEditWithInstruction<CR>', desc = 'Edit with instruction', mode = { 'n', 'v' } },
-      { '<leader>cg', '<cmd>ChatGPTRun grammar_correction<CR>', desc = 'Grammar Correction', mode = { 'n', 'v' } },
-      { '<leader>ct', '<cmd>ChatGPTRun translate<CR>', desc = 'Translate', mode = { 'n', 'v' } },
-      { '<leader>ck', '<cmd>ChatGPTRun keywords<CR>', desc = 'Keywords', mode = { 'n', 'v' } },
-      { '<leader>cd', '<cmd>ChatGPTRun docstring<CR>', desc = 'Docstring', mode = { 'n', 'v' } },
-      { '<leader>ca', '<cmd>ChatGPTRun add_tests<CR>', desc = 'Add Tests', mode = { 'n', 'v' } },
-      { '<leader>co', '<cmd>ChatGPTRun optimize_code<CR>', desc = 'Optimize Code', mode = { 'n', 'v' } },
-      { '<leader>cs', '<cmd>ChatGPTRun summarize<CR>', desc = 'Summarize', mode = { 'n', 'v' } },
-      { '<leader>cf', '<cmd>ChatGPTRun fix_bugs<CR>', desc = 'Fix Bugs', mode = { 'n', 'v' } },
-      { '<leader>cx', '<cmd>ChatGPTRun explain_code<CR>', desc = 'Explain Code', mode = { 'n', 'v' } },
-      { '<leader>cr', '<cmd>ChatGPTRun roxygen_edit<CR>', desc = 'Roxygen Edit', mode = { 'n', 'v' } },
-      {
-        '<leader>cl',
-        '<cmd>ChatGPTRun code_readability_analysis<CR>',
-        desc = 'Code Readability Analysis',
-        mode = { 'n', 'v' },
-      },
+      -- CodeCompanion keybindings
+      { '<leader>co', '<cmd>CodeCompanionActions<cr>', desc = 'CodeCompanion Actions', icon = '' }, -- Actions icon
+      { '<leader>ct', '<cmd>CodeCompanionToggle<cr>', desc = 'CodeCompanion Toggle', icon = '' }, -- Toggle icon
+      { '<leader>cc', '<cmd>CodeCompanion<cr>', desc = 'CodeCompanion', icon = '' }, -- CodeCompanion icon
+      { '<leader>ca', '<cmd>CodeCompanionAdd<cr>', desc = 'CodeCompanion Add', icon = '' }, -- Add icon
 
       -- Debug keybindings
       { '<leader>d', group = 'Debug' },
@@ -687,6 +672,12 @@ return {
         { '<leader>toN', '<Cmd>ObsidianLinkNew<CR>', desc = 'Insert link and create new note' },
         { '<leader>toe', '<Cmd>ObsidianExtractNote<CR>', desc = 'Extract text and create note' },
         { '<leader>tol', '<Cmd>ObsidianLink<CR>', desc = 'Insert link' },
+        --
+        -- CodeCompanion keybindings
+        { '<leader>co', '<cmd>CodeCompanionActions<cr>', desc = 'CodeCompanion Actions', icon = '' }, -- Actions icon
+        { '<leader>ct', '<cmd>CodeCompanionToggle<cr>', desc = 'CodeCompanion Toggle', icon = '' }, -- Toggle icon
+        { '<leader>cc', '<cmd>CodeCompanion<cr>', desc = 'CodeCompanion', icon = '' }, -- CodeCompanion icon
+        { '<leader>ca', '<cmd>CodeCompanionAdd<cr>', desc = 'CodeCompanion Add', icon = '' }, -- Add icon
       },
     }
 

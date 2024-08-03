@@ -1,0 +1,26 @@
+return {
+  -- 'huynle/ogpt.nvim',
+  -- event = 'VeryLazy',
+  -- opts = {
+  --   default_provider = 'ollama',
+  --   edgy = true,
+  --   single_window = false,
+  --   providers = {
+  --     ollama = {
+  --       api_host = os.getenv 'OLLAMA_API_HOST' or 'http://localhost:11434',
+  --       api_key = os.getenv 'OLLAMA_API_KEY' or '',
+  --       model = {
+  --         name = 'llama3.1:latest',
+  --       },
+  --       models = {
+  --         general_model = 'llama3.1:latest',
+  --       },
+  --     },
+  --   },
+  -- },
+  -- dependencies = {
+  --   'MunifTanjim/nui.nvim',
+  --   'nvim-lua/plenary.nvim',
+  --   'nvim-telescope/telescope.nvim',
+  -- },
+}
