@@ -1,8 +1,8 @@
 return {
   'folke/which-key.nvim',
   opts = {},
-
-  init = function()
+  event = 'VeryLazy',
+  config = function()
     local function toggle_light_dark_theme()
       if vim.o.background == 'light' then
         vim.o.background = 'dark'
@@ -113,17 +113,6 @@ return {
         print 'No Jupyter connection file found.'
       end
     end
-
-    -- -- Function to start browser-sync in a new terminal buffer
-    -- local function start_browser_sync()
-    --   -- Open a new terminal and run the command
-    --   vim.cmd("terminal cd ~/html/ && browser-sync start --server --files '*.html'")
-    --   -- Go back to the previous buffer
-    --   vim.cmd("normal! <C-\\><C-n><C-^>")
-    --   -- If you want to hide the terminal buffer instead of just switching away,
-    --   -- you can use the following command
-    --   vim.cmd("hide")
-    -- end
 
     -- Define a Lua function to send code to the terminal, scroll down, and return to the original window
     local function send_to_terminal_and_scroll_down()
