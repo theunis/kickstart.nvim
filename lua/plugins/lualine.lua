@@ -1,12 +1,3 @@
-local function show_macro_recording()
-  local recording_register = vim.fn.reg_recording()
-  if recording_register == '' then
-    return ''
-  else
-    return 'Recording @' .. recording_register
-  end
-end
-
 return {
   -- Set lualine as statusline
   'nvim-lualine/lualine.nvim',
@@ -14,7 +5,21 @@ return {
   lazy = false,
   config = function()
     local lualine = require 'lualine'
-    local code_companion = require 'lualine-custom'
+    local function code_companion()
+      if package.loaded['code_companion'] then
+        return require 'lualine-custom'
+      end
+      return ''
+    end
+
+    local function show_macro_recording()
+      local recording_register = vim.fn.reg_recording()
+      if recording_register == '' then
+        return ''
+      else
+        return 'Recording @' .. recording_register
+      end
+    end
 
     -- -- Define a function to check that ollama is installed and working
     -- local function get_condition()
@@ -31,6 +36,17 @@ return {
     --     return '󰚩' -- nf-md-robot
     --   end
     -- end
+
+    local function jupyter_line()
+      if package.loaded['jupyter_connection'] then
+        local jupyter_connection = require 'jupyter_connection'
+        local connection_file_basename = jupyter_connection.get_connection_file_basename()
+        if connection_file_basename then
+          return 'Jupyter: ' .. connection_file_basename
+        end
+      end
+      return ''
+    end
 
     local opts = {
       options = {
@@ -50,17 +66,7 @@ return {
           },
         },
         lualine_x = {
-          {
-            function()
-              local jupyter_connection = require 'jupyter_connection'
-              local connection_file_basename = jupyter_connection.get_connection_file_basename()
-              if connection_file_basename then
-                return 'Jupyter: ' .. connection_file_basename
-              end
-              return ''
-            end,
-            color = { fg = '#f5e0dc' },
-          },
+          { jupyter_line, color = { fg = '#f5e0dc' } },
           code_companion,
           -- 'aerial',
           -- get_status_icon,

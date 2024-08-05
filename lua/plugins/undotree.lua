@@ -1,4 +1,4 @@
 return {
   'mbbill/undotree',
-  lazy=false,
+  cmd = 'UndotreeToggle',
 }

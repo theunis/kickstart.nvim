@@ -7,25 +7,23 @@
 -- kickstart.nvim and not kitchen-sink.nvim ;)
 
 return {
-  -- NOTE: Yes, you can install new plugins here!
-  "mfussenegger/nvim-dap",
-  -- NOTE: And you can specify dependencies as well
+  'mfussenegger/nvim-dap',
   dependencies = {
     -- Creates a beautiful debugger UI
-    "rcarriga/nvim-dap-ui",
-    "nvim-neotest/nvim-nio",
+    'rcarriga/nvim-dap-ui',
+    'nvim-neotest/nvim-nio',
     -- Installs the debug adapters for you
-    "williamboman/mason.nvim",
-    "jay-babu/mason-nvim-dap.nvim",
+    'williamboman/mason.nvim',
+    'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
-    "leoluz/nvim-dap-go",
+    'leoluz/nvim-dap-go',
   },
   config = function()
-    local dap = require("dap")
-    local dapui = require("dapui")
+    local dap = require 'dap'
+    local dapui = require 'dapui'
 
-    require("mason-nvim-dap").setup({
+    require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
       automatic_setup = true,
@@ -38,38 +36,38 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        "delve",
+        'delve',
       },
-    })
+    }
     -- Dart / Flutter
     dap.adapters.dart = {
-      type = "executable",
-      command = "dart",
-      args = { "debug_adapter" },
+      type = 'executable',
+      command = 'dart',
+      args = { 'debug_adapter' },
     }
     dap.adapters.flutter = {
-      type = "executable",
-      command = "flutter",
-      args = { "debug_adapter" },
+      type = 'executable',
+      command = 'flutter',
+      args = { 'debug_adapter' },
     }
     dap.configurations.dart = {
       {
-        type = "dart",
-        request = "launch",
-        name = "Launch dart",
-        dartSdkPath = "/Users/theunvanvliet/Documents/Development/Flutter.nosync/flutter/bin/flutter/bin/cache/dart-sdk/", -- ensure this is correct
-        flutterSdkPath = "/Users/theunvanvliet/Documents/Development/Flutter.nosync/flutter/bin/flutter", -- ensure this is correct
-        program = "${workspaceFolder}/lib/main.dart", -- ensure this is correct
-        cwd = "${workspaceFolder}",
+        type = 'dart',
+        request = 'launch',
+        name = 'Launch dart',
+        dartSdkPath = '/Users/theunvanvliet/Documents/Development/Flutter.nosync/flutter/bin/flutter/bin/cache/dart-sdk/', -- ensure this is correct
+        flutterSdkPath = '/Users/theunvanvliet/Documents/Development/Flutter.nosync/flutter/bin/flutter', -- ensure this is correct
+        program = '${workspaceFolder}/lib/main.dart', -- ensure this is correct
+        cwd = '${workspaceFolder}',
       },
       {
-        type = "flutter",
-        request = "launch",
-        name = "Launch flutter",
-        dartSdkPath = "/Users/theunvanvliet/Documents/Development/Flutter.nosync/flutter/bin/flutter/bin/cache/dart-sdk/", -- ensure this is correct
-        flutterSdkPath = "/Users/theunvanvliet/Documents/Development/Flutter.nosync/flutter/bin/flutter", -- ensure this is correct
-        program = "${workspaceFolder}/lib/main.dart", -- ensure this is correct
-        cwd = "${workspaceFolder}",
+        type = 'flutter',
+        request = 'launch',
+        name = 'Launch flutter',
+        dartSdkPath = '/Users/theunvanvliet/Documents/Development/Flutter.nosync/flutter/bin/flutter/bin/cache/dart-sdk/', -- ensure this is correct
+        flutterSdkPath = '/Users/theunvanvliet/Documents/Development/Flutter.nosync/flutter/bin/flutter', -- ensure this is correct
+        program = '${workspaceFolder}/lib/main.dart', -- ensure this is correct
+        cwd = '${workspaceFolder}',
       },
     }
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -84,7 +82,7 @@ return {
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
-    dapui.setup({
+    dapui.setup {
       -- Set icons to characters that are more likely to work in every terminal.
       --    Feel free to remove or use ones that you like more! :)
       --    Don't feel like these are good choices.
@@ -102,14 +100,14 @@ return {
       --     disconnect = '⏏',
       --   },
       -- },
-    })
+    }
 
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     -- vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
 
-    dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-    dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-    dap.listeners.before.event_exited["dapui_config"] = dapui.close
+    dap.listeners.after.event_initialized['dapui_config'] = dapui.open
+    dap.listeners.before.event_terminated['dapui_config'] = dapui.close
+    dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
     -- DAP key mappings with descriptions for which-key
     -- local dap_mappings = {

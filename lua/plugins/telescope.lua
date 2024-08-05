@@ -82,8 +82,7 @@ local telescope_builtin = require 'telescope.builtin'
 
 return {
   'nvim-telescope/telescope.nvim',
-  branch = '0.1.x',
-  lazy = false,
+  cmd = { 'Telescope' },
   dependencies = {
     'nvim-lua/plenary.nvim',
     -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -91,8 +90,6 @@ return {
     -- requirements installed.
     {
       'nvim-telescope/telescope-fzf-native.nvim',
-      -- NOTE: If you are having trouble with this installation,
-      --       refer to the README for telescope-fzf-native for more instructions.
       build = 'make',
       cond = function()
         return vim.fn.executable 'make' == 1

@@ -1,53 +1,48 @@
 return {
   -- NOTE: First, some plugins that don't require any configuration
   -- Git related plugins
-  { "tpope/vim-fugitive", lazy = false },
-  "tpope/vim-rhubarb",
+  { 'tpope/vim-fugitive', cmd = 'Git' },
+  'tpope/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
-  "tpope/vim-sleuth",
+  'tpope/vim-sleuth',
 
-  { "numToStr/FTerm.nvim", lazy = false },
-  "ryanoasis/vim-devicons",
+  'numToStr/FTerm.nvim',
+  'ryanoasis/vim-devicons',
 
-  { "folke/neoconf.nvim", cmd = "Neoconf" },
-  "folke/neodev.nvim",
+  { 'folke/neoconf.nvim', cmd = 'Neoconf' },
+  'folke/neodev.nvim',
+  -- {
+  --   'zbirenbaum/copilot.lua',
+  --   cmd = 'Copilot',
+  --   event = 'InsertEnter',
+  --   opts = {
+  --     suggestion = { enabled = false },
+  --     panel = { enabled = false },
+  --   },
+  -- },
+  -- {
+  --   'zbirenbaum/copilot-cmp',
+  --   opts = {
+  --     fix_pairs = true,
+  --   },
+  --   event = { 'InsertEnter', 'LspAttach' },
+  -- },
   {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    opts = {
-      suggestion = { enabled = false },
-      panel = { enabled = false },
-    },
+    'HampusHauffman/block.nvim',
+    opts = {},
+    cmd = { 'Block', 'BlockOn' },
   },
   {
-    "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-    opts = {
-      event = { "InsertEnter", "LspAttach" },
-      fix_pairs = true,
-    },
+    'unblevable/quick-scope',
+    event = { 'BufReadPre', 'BufNewFile' },
   },
   {
-    "HampusHauffman/block.nvim",
-    lazy = false,
-    config = function()
-      require("block").setup({})
-    end,
+    'folke/zen-mode.nvim',
+    cmd = 'ZenMode',
   },
   {
-    "unblevable/quick-scope",
-    lazy = false,
-  },
-  {
-    "folke/zen-mode.nvim",
-    lazy = false,
-  },
-  {
-    "folke/twilight.nvim",
-    lazy = false,
+    'folke/twilight.nvim',
+    cmd = 'Twilight',
   },
 }

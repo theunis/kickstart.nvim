@@ -158,7 +158,8 @@ end
 return {
   'neovim/nvim-lspconfig',
   config = config,
-  lazy = false,
+  event = { 'BufReadPre', 'BufNewFile' },
+  cmd = { 'LspInfo', 'LspInstall', 'LspUninstall' },
   dependencies = {
     'windwp/nvim-autopairs',
     'williamboman/mason.nvim',
