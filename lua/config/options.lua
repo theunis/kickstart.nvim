@@ -56,3 +56,6 @@ opt.timeoutlen = 300
 vim.g.python3_host_prog = vim.fn.expand '~/.virtualenvs/neovim/bin/python3'
 
 vim.o.tags = vim.o.tags .. ',.tags_columns'
+
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1

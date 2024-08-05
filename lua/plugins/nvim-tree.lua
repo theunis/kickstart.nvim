@@ -1,5 +1,4 @@
 return {
-	'nvim-tree/nvim-tree.lua',
-	lazy = false,
-	opts = {},
+  'nvim-tree/nvim-tree.lua',
+  opts = {},
 }

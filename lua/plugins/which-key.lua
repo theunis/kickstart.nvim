@@ -1,8 +1,8 @@
 return {
   'folke/which-key.nvim',
   opts = {},
-  event = 'VeryLazy',
-  config = function()
+  lazy = false,
+  init = function()
     local function toggle_light_dark_theme()
       if vim.o.background == 'light' then
         vim.o.background = 'dark'

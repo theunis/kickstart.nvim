@@ -2,7 +2,7 @@ return {
   -- Set lualine as statusline
   'nvim-lualine/lualine.nvim',
   -- See `:help lualine.txt`
-  lazy = false,
+  event = 'VeryLazy',
   config = function()
     local lualine = require 'lualine'
     local function code_companion()
