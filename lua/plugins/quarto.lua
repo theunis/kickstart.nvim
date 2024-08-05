@@ -9,7 +9,7 @@
 return {
 
   {
-    "quarto-dev/quarto-nvim",
+    'quarto-dev/quarto-nvim',
     keymap = {},
     dependencies = {
 
@@ -17,7 +17,7 @@ return {
       -- and in doing so currently breaks renaming in otter.nvim
       -- { 'stevearc/dressing.nvim', enabled = false },
       {
-        "jmbuhr/otter.nvim",
+        'jmbuhr/otter.nvim',
         opts = {
           buffers = {
             set_filetype = true,
@@ -27,16 +27,16 @@ return {
       -- send code from python/r/qmd documets to a terminal or REPL
       -- like ipython, R, bash
       {
-        "jpalardy/vim-slime",
-        cmd = "QuartoSend",
+        'jpalardy/vim-slime',
+        cmd = 'QuartoSend',
         init = function()
           -- Quarto Python chunk detection
-          vim.b["quarto_is_" .. "python" .. "_chunk"] = false
+          vim.b['quarto_is_' .. 'python' .. '_chunk'] = false
           _G.Quarto_is_in_python_chunk = function()
-            require("otter.tools.functions").is_otter_language_context("python")
+            require('otter.tools.functions').is_otter_language_context 'python'
           end
 
-          vim.cmd([[
+          vim.cmd [[
         let g:slime_dispatch_ipython_pause = 100
         function! SlimeOverride_EscapeText_quarto(text)
           call v:lua.Quarto_is_in_python_chunk()
@@ -47,23 +47,23 @@ return {
             return a:text
           endif
         endfunction
-      ]])
+      ]]
 
           -- Slime and Neovim terminal configuration
-          vim.g.slime_target = "tmux"
+          vim.g.slime_target = 'tmux'
           vim.g.slime_python_ipython = 1
           vim.g.slime_bracketed_paste = 1
 
           -- Terminal functions
-          local function mark_terminal()
-            vim.g.slime_last_channel = vim.b.terminal_job_id
-            vim.api.nvim_out_write("Terminal marked: " .. vim.g.slime_last_channel .. "\n")
-          end
-
-          local function set_terminal()
-            vim.b.slime_config = { jobid = vim.g.slime_last_channel }
-            vim.api.nvim_out_write("Slime terminal set to: " .. vim.g.slime_last_channel .. "\n")
-          end
+          -- local function mark_terminal()
+          --   vim.g.slime_last_channel = vim.b.terminal_job_id
+          --   vim.api.nvim_out_write('Terminal marked: ' .. vim.g.slime_last_channel .. '\n')
+          -- end
+          --
+          -- local function set_terminal()
+          --   vim.b.slime_config = { jobid = vim.g.slime_last_channel }
+          --   vim.api.nvim_out_write('Slime terminal set to: ' .. vim.g.slime_last_channel .. '\n')
+          -- end
 
           -- -- Register keybindings with which-key
           -- require('which-key').register {
@@ -79,10 +79,10 @@ return {
     opts = {
       lspFeatures = {
         enabled = true,
-        languages = { "r", "python", "bash", "html", "lua" },
+        languages = { 'r', 'python', 'bash', 'html', 'lua' },
         diagnostics = {
           enabled = true,
-          triggers = { "BufWrite" },
+          triggers = { 'BufWrite' },
         },
         completion = {
           enabled = true,
@@ -90,13 +90,13 @@ return {
       },
       codeRunner = {
         enabled = true,
-        default_method = { "slime" }, -- 'molten' or 'slime'
-        ft_runners = { python = "slime" }, -- filetype to runner, ie. `{ python = "molten" }`.
+        default_method = { 'slime' }, -- 'molten' or 'slime'
+        ft_runners = { python = 'slime' }, -- filetype to runner, ie. `{ python = "molten" }`.
         -- Takes precedence over `default_method`
-        never_run = { "yaml" }, -- filetypes which are never sent to a code runner
+        never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
       },
     },
-    ft = "quarto",
+    ft = 'quarto',
     -- keys = {
     --   { '<leader>qa', ':QuartoActivate<cr>', desc = 'quarto activate' },
     --   { '<leader>qp', ":lua require'quarto'.quartoPreview()<cr>", desc = 'quarto preview' },

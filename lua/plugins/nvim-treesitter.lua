@@ -1,7 +1,5 @@
-return {
-  -- Highlight, edit, and navigate code
-  'nvim-treesitter/nvim-treesitter',
-  opts = {
+local config = function()
+  require('nvim-treesitter.configs').setup {
 
     ensure_installed = {
       'bash',
@@ -89,7 +87,14 @@ return {
         },
       },
     },
-  },
+  }
+end
+
+return {
+  -- Highlight, edit, and navigate code
+  'nvim-treesitter/nvim-treesitter',
+  config = config,
+  event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
     'nvim-treesitter/nvim-treesitter-textobjects',
     -- 'nvim-treesitter/nvim-treesitter-context',
