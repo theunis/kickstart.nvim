@@ -131,3 +131,4 @@ command('TagYankedColumnsVanilla', function(options)
 end, {
   nargs = '?',
 })
+

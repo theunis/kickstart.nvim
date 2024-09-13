@@ -1,17 +1,22 @@
 return {
   -- NOTE: First, some plugins that don't require any configuration
   -- Git related plugins
-  { 'tpope/vim-fugitive', cmd = 'Git' },
-  'tpope/vim-rhubarb',
+  { "tpope/vim-fugitive", cmd = "Git" },
+  "tpope/vim-rhubarb",
 
   -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
+  "tpope/vim-sleuth",
 
-  'numToStr/FTerm.nvim',
-  'ryanoasis/vim-devicons',
+  "numToStr/FTerm.nvim",
+  "ryanoasis/vim-devicons",
 
-  { 'folke/neoconf.nvim', cmd = 'Neoconf' },
-  'folke/neodev.nvim',
+  { "folke/neoconf.nvim", cmd = "Neoconf" },
+  "folke/neodev.nvim",
+
+  {
+    "stevearc/dressing.nvim",
+    opts = {},
+  },
   -- {
   --   'zbirenbaum/copilot.lua',
   --   cmd = 'Copilot',
@@ -29,20 +34,26 @@ return {
   --   event = { 'InsertEnter', 'LspAttach' },
   -- },
   {
-    'HampusHauffman/block.nvim',
+    "HampusHauffman/block.nvim",
     opts = {},
-    cmd = { 'Block', 'BlockOn' },
+    cmd = { "Block", "BlockOn" },
   },
   {
-    'unblevable/quick-scope',
-    event = { 'BufReadPre', 'BufNewFile' },
+    "unblevable/quick-scope",
+    event = { "BufReadPre", "BufNewFile" },
   },
   {
-    'folke/zen-mode.nvim',
-    cmd = 'ZenMode',
+    "folke/zen-mode.nvim",
+    cmd = "ZenMode",
   },
   {
-    'folke/twilight.nvim',
-    cmd = 'Twilight',
+    "folke/twilight.nvim",
+    cmd = "Twilight",
   },
+  {
+    "tzachar/highlight-undo.nvim",
+    opts = {},
+    event = { "BufReadPre", "BufNewFile" },
+  },
+  { "Wansmer/sibling-swap.nvim", event = { "BufReadPre", "BufNewFile" } },
 }

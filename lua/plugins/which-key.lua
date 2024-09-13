@@ -231,7 +231,8 @@ return {
 
     local function open_jupyter_console()
       local bufnr = vim.api.nvim_get_current_buf()
-      local connection_file = require('jupyter_connection').get_connection_file(bufnr)
+      local jupyter_connection = require 'jupyter_connection'
+      local connection_file = jupyter_connection.get_connection_file(bufnr)
       local cmd
 
       -- Function to determine if Poetry is being used
@@ -340,6 +341,7 @@ return {
           vim.notify('No virtual environment detected. Please activate your environment.', vim.log.levels.ERROR)
           return
         end
+        jupyter_connection.set_most_recent_connection_file(bufnr)
       end
 
       -- Check if create_tmux_pane is available

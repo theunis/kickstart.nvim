@@ -39,14 +39,15 @@ local config = function()
         node_decremental = 'grm',
       },
     },
+    include_surrounding_whitespace = true,
     textobjects = {
       select = {
         enable = true,
         lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
-          ['aa'] = '@parameter.outer',
-          ['ia'] = '@parameter.inner',
+          ['aa'] = { query = '@parameter.outer', desc = 'Select outer part of argument' },
+          ['ia'] = { query = '@parameter.inner', desc = 'Select inner part of argument' },
           ['af'] = { query = '@function.outer', desc = 'Select outer part of a function region' },
           ['if'] = { query = '@function.inner', desc = 'Select inner part of a function region' },
           ['ac'] = { query = '@class.outer', desc = 'Select outer part of a class region' },
@@ -97,6 +98,11 @@ return {
   event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
     'nvim-treesitter/nvim-treesitter-textobjects',
+    {
+      'chrisgrieser/nvim-various-textobjs',
+      event = 'UIEnter',
+      opts = { useDefaultKeymaps = true },
+    },
     -- 'nvim-treesitter/nvim-treesitter-context',
   },
   build = ':TSUpdate',

@@ -43,6 +43,15 @@ function M.get_connection_files()
   return connection_files
 end
 
+function M.set_most_recent_connection_file(bufnr)
+  local connection_files = M.get_connection_files()
+  if #connection_files == 0 then
+    return
+  end
+  local most_recent_connection_file = connection_files[#connection_files]
+  M.set_connection_file(bufnr, most_recent_connection_file)
+end
+
 function M.select_connection_file(callback)
   local connection_files = M.get_connection_files()
   local results = {}
@@ -86,7 +95,7 @@ function M.ensure_connection_file(callback)
   local bufnr = vim.api.nvim_get_current_buf()
   local connection_file = M.get_connection_file(bufnr)
 
-  if not connection_file then
+  if not connection_file or #connection_file == 0 then
     print 'No Jupyter connection file set for this buffer. Please select one.'
     M.select_connection_file(callback)
   else
@@ -98,6 +107,7 @@ end
 
 function M.init_molten()
   M.ensure_connection_file(function(connection_file)
+    print(connection_file)
     vim.cmd('MoltenInit ' .. connection_file)
     print('Molten initialized with connection file: ' .. connection_file)
   end)

@@ -32,6 +32,9 @@ return {
     vim.o.foldenable = true
     require('ufo').setup {
       close_fold_kinds_for_ft = { default = { default = { 'imports' } } },
+      provider_selector = function(bufnr, filetype, buftype)
+        return { 'treesitter', 'indent' }
+      end,
     }
   end,
 }

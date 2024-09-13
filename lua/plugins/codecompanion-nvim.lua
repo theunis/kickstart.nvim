@@ -1,12 +1,13 @@
 return {
-  'olimorris/codecompanion.nvim',
+  "olimorris/codecompanion.nvim",
+  cmd = "CodeCompanion",
   opts = {
     adapters = {
       ollama = function()
-        return require('codecompanion.adapters').use('ollama', {
+        return require("codecompanion.adapters").use("ollama", {
           schema = {
             model = {
-              default = 'llama3.1:latest',
+              default = "llama3.1:latest",
             },
           },
         })
@@ -14,13 +15,13 @@ return {
     },
     strategies = {
       chat = {
-        adapter = 'ollama',
+        adapter = "ollama",
       },
       inline = {
-        adapter = 'ollama',
+        adapter = "ollama",
       },
       agent = {
-        adapter = 'ollama',
+        adapter = "ollama",
       },
     },
   },
@@ -30,6 +31,6 @@ return {
   -- },
   config = true,
   init = function()
-    vim.cmd [[cab cc CodeCompanion]]
+    vim.cmd([[cab cc CodeCompanion]])
   end,
 }

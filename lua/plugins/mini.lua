@@ -8,7 +8,7 @@ return { -- Collection of various small independent plugins/modules
     --  - va)  - [V]isually select [A]round [)]paren
     --  - yinq - [Y]ank [I]nside [N]ext [']quote
     --  - ci'  - [C]hange [I]nside [']quote
-    require('mini.ai').setup { n_lines = 500 }
+    -- require('mini.ai').setup { n_lines = 500 }
 
     -- Add/delete/replace surroundings (brackets, quotes, etc.)
     --
@@ -26,8 +26,8 @@ return { -- Collection of various small independent plugins/modules
         update_n_lines = 'gsn', -- Update `n_lines`
       },
     }
-
-    -- ... and there is more!
+    require('mini.pairs').setup()
+    require('mini.animate').setup()
     --  Check out: https://github.com/echasnovski/mini.nvim
   end,
 }

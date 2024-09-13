@@ -59,3 +59,5 @@ vim.o.tags = vim.o.tags .. ',.tags_columns'
 
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrw = 1
+
+vim.g.vim_markdown_folding_disabled = 1

@@ -80,3 +80,5 @@ vim.api.nvim_create_autocmd({ 'ModeChanged', 'BufWrite' }, {
   buffer = buf,
   callback = highlight_cells,
 })
+
+require('render-markdown').enable()
