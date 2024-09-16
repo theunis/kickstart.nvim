@@ -27,7 +27,7 @@ return { -- Collection of various small independent plugins/modules
       },
     }
     require('mini.pairs').setup()
-    require('mini.animate').setup()
+    -- require('mini.animate').setup()
     --  Check out: https://github.com/echasnovski/mini.nvim
   end,
 }
