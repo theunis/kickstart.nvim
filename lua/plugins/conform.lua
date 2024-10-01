@@ -12,8 +12,8 @@ return { -- Autoformat
       },
       formatters_by_ft = {
         lua = { "mystylua" },
-        python = { "isort", "black" },
-        quarto = { "injected" }, -- enables injected-lang formatting for all filetypes
+        python = { "ruff_organize_imports", "ruff_format" }, -- { 'isort', 'black' },
+        quarto = { "prettier", "injected" }, -- enables injected-lang formatting for all filetypes
       },
       formatters = {
         mystylua = {
@@ -22,6 +22,11 @@ return { -- Autoformat
         },
       },
     })
+    require("conform").formatters.prettier = {
+      options = { ext_parsers = {
+        qmd = "markdown",
+      } },
+    }
     -- Customize the "injected" formatter
     require("conform").formatters.injected = {
       -- Set the options field

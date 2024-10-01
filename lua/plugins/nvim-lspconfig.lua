@@ -84,6 +84,7 @@ local config = function()
     on_attach = on_attach,
     settings = {
       pyright = {
+        -- Using Ruff's import organizer
         disableOrganizeImports = false,
         disableTaggedHints = false,
         disableLanguageServices = false,
@@ -92,6 +93,12 @@ local config = function()
           autoSearchPaths = true,
           diagnosticMode = "workspace",
           autoImportCompletions = true,
+        },
+      },
+      python = {
+        analysis = {
+          -- Ignore all files for analysis to exclusively use Ruff for linting
+          ignore = { "*" },
         },
       },
     },
@@ -112,6 +119,14 @@ local config = function()
         or lspconfig.util.path.dirname(fname)
     end,
   })
+
+  -- require("lspconfig").ruff.setup({
+  -- init_options = {
+  --   settings = {
+  --     -- Ruff language server settings go here
+  --   },
+  -- },
+  -- })
 
   lspconfig.jsonls.setup({
     capabilities = capabilities,

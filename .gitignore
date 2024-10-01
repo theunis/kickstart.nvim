@@ -4,3 +4,4 @@ test.sh
 nvim
 tmux-*
 .DS_Store
+node_modules

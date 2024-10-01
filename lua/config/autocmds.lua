@@ -15,19 +15,19 @@
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank()
   end,
   group = highlight_group,
-  pattern = '*',
+  pattern = "*",
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'python', 'quarto' },
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "python", "quarto" },
   callback = function(args)
-    if args.match == 'python' or args.match == 'quarto' then
+    if args.match == "python" or args.match == "quarto" then
       vim.opt_local.shiftwidth = 4
       vim.opt_local.softtabstop = 4
       vim.opt_local.expandtab = true
@@ -45,3 +45,17 @@ vim.api.nvim_create_autocmd('FileType', {
 
 vim.api.nvim_create_autocmd('InsertEnter', { command = [[set norelativenumber]] })
 vim.api.nvim_create_autocmd('InsertLeave', { command = [[set relativenumber]] })
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client == nil then
+      return
+    end
+    if client.name == "ruff" then
+      -- Disable hover in favor of Pyright
+      client.server_capabilities.hoverProvider = false
+    end
+  end,
+  desc = "LSP: Disable hover capability from Ruff",
+})
