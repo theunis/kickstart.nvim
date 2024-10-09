@@ -52,6 +52,9 @@ opt.conceallevel = 1
 opt.updatetime = 250
 opt.timeoutlen = 300
 
+-- when moving with e.g. ctrl-u, ctrl-d, gg, G, go to first non-blank char in line
+opt.startofline = true
+
 -- Molten
 vim.g.python3_host_prog = vim.fn.expand '~/.virtualenvs/neovim/bin/python3'
 
