@@ -345,4 +345,92 @@ function M.create_qmd_scratch_file()
   vim.cmd('edit ' .. filepath)
 end
 
+-- Function to go to the next code block
+function M.goto_next_code_block()
+  local ts = vim.treesitter
+  local parser = ts.get_parser(0, 'markdown')
+  local tree = parser:parse()[1]
+  local root = tree:root()
+  local query = ts.query.parse('markdown', '(fenced_code_block) @code_block')
+
+  local code_blocks = {}
+  for id, node in query:iter_captures(root, 0) do
+    local start_row, _, _ = node:start()
+    table.insert(code_blocks, { node = node, start_row = start_row })
+  end
+
+  local current_row = vim.api.nvim_win_get_cursor(0)[1] - 1
+  local next_block = nil
+  local min_row = math.huge
+
+  for _, block in ipairs(code_blocks) do
+    if block.start_row > current_row and block.start_row < min_row then
+      min_row = block.start_row
+      next_block = block
+    end
+  end
+
+  if next_block then
+    local code_fence_content = nil
+    for child in next_block.node:iter_children() do
+      if child:type() == 'code_fence_content' then
+        code_fence_content = child
+        break
+      end
+    end
+    if code_fence_content then
+      local content_start_row, content_start_col = code_fence_content:start()
+      vim.api.nvim_win_set_cursor(0, { content_start_row + 1, content_start_col })
+    else
+      vim.api.nvim_win_set_cursor(0, { next_block.start_row + 1, 0 })
+    end
+  else
+    print 'No next code block found'
+  end
+end
+
+-- Function to go to the previous code block
+function M.goto_previous_code_block()
+  local ts = vim.treesitter
+  local parser = ts.get_parser(0, 'markdown')
+  local tree = parser:parse()[1]
+  local root = tree:root()
+  local query = ts.query.parse('markdown', '(fenced_code_block) @code_block')
+
+  local code_blocks = {}
+  for id, node in query:iter_captures(root, 0) do
+    local start_row, _, _ = node:start()
+    table.insert(code_blocks, { node = node, start_row = start_row })
+  end
+
+  local current_row = vim.api.nvim_win_get_cursor(0)[1] - 1
+  local prev_block = nil
+  local max_row = -1
+
+  for _, block in ipairs(code_blocks) do
+    if block.start_row < current_row and block.start_row > max_row then
+      max_row = block.start_row
+      prev_block = block
+    end
+  end
+
+  if prev_block then
+    local code_fence_content = nil
+    for child in prev_block.node:iter_children() do
+      if child:type() == 'code_fence_content' then
+        code_fence_content = child
+        break
+      end
+    end
+    if code_fence_content then
+      local content_start_row, content_start_col = code_fence_content:start()
+      vim.api.nvim_win_set_cursor(0, { content_start_row + 1, content_start_col })
+    else
+      vim.api.nvim_win_set_cursor(0, { prev_block.start_row + 1, 0 })
+    end
+  else
+    print 'No previous code block found'
+  end
+end
+
 return M

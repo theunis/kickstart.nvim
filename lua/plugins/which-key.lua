@@ -343,6 +343,10 @@ return {
       { '<m-i>', insert_r_chunk, desc = 'R code chunk' },
       { '<cm-i>', insert_py_chunk, desc = 'Python code chunk' },
       { '<m-I>', insert_py_chunk, desc = 'Python code chunk' },
+
+      -- { 'C-n', funcs.goto_next_code_block },
+      -- { 'C-p', funcs.goto_previous_code_block },
+
       {
         '<C-p>',
         function()
