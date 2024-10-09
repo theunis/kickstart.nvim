@@ -73,14 +73,14 @@ return {
       -- Go keybindings
       { '<leader>g', group = 'Go' },
       { '<leader>gf', '<Cmd>Lspsaga finder<CR>', desc = 'Finder' },
-      { '<leader>gd', 'Lspsaga peek_definition', desc = 'Peek/Ask Definition' },
-      { '<leader>gD', 'Lspsaga goto_definition', desc = 'Goto/Ask Definition' },
-      { '<leader>gh', 'Lspsaga hover_doc', desc = 'Hover Doc/Ask Hover' },
-      { 'gd', 'Lspsaga goto_definition', desc = 'Goto/Ask Definition' },
+      { '<leader>gd', '<Cmd>Lspsaga peek_definition<CR>', desc = 'Peek/Ask Definition' },
+      { '<leader>gD', '<Cmd>Lspsaga goto_definition<CR>', desc = 'Goto/Ask Definition' },
+      { '<leader>gh', '<Cmd>Lspsaga hover_doc<CR>', desc = 'Hover Doc/Ask Hover' },
+      { 'gd', '<Cmd>Lspsaga goto_definition<CR>', desc = 'Goto/Ask Definition' },
 
       -- LSP keybindings
       { '<leader>l', group = 'LSP' },
-      { '<leader>la', 'Lspsaga code_action', desc = 'Code Action' },
+      { '<leader>la', '<Cmd>Lspsaga code_action<CR>', desc = 'Code Action' },
       { '<leader>lc', '<Cmd>Lspsaga show_cursor_diagnostics<CR>', desc = 'Cursor Diagnostics' },
       { '<leader>lC', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Line Diagnostics' },
       { '<leader>ld', "<cmd>lua require('trouble').toggle('document_diagnostics')<cr>", desc = 'Document Diagnostics' },
@@ -344,33 +344,33 @@ return {
       { '<cm-i>', insert_py_chunk, desc = 'Python code chunk' },
       { '<m-I>', insert_py_chunk, desc = 'Python code chunk' },
 
-      -- { 'C-n', funcs.goto_next_code_block },
-      -- { 'C-p', funcs.goto_previous_code_block },
+      { '<C-n>', funcs.goto_next_code_block },
+      { '<C-p>', funcs.goto_previous_code_block },
 
-      {
-        '<C-p>',
-        function()
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('[[', true, false, true), 'x')
-          local current_pos = vim.api.nvim_win_get_cursor(0)
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes(']]', true, false, true), 'x')
-          local new_pos = vim.api.nvim_win_get_cursor(0)
-          if current_pos[1] < new_pos[1] then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes('[[', true, false, true), 'x')
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes('[[', true, false, true), 'x')
-          else
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes('[[', true, false, true), 'x')
-          end
-          vim.cmd 'normal! j'
-        end,
-        desc = 'Previous code chunk',
-      },
-      {
-        '<C-n>',
-        function()
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes(']]j', true, false, true), '')
-        end,
-        desc = 'Next code chunk',
-      },
+      -- {
+      --   '<C-p>',
+      --   function()
+      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('[[', true, false, true), 'x')
+      --     local current_pos = vim.api.nvim_win_get_cursor(0)
+      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes(']]', true, false, true), 'x')
+      --     local new_pos = vim.api.nvim_win_get_cursor(0)
+      --     if current_pos[1] < new_pos[1] then
+      --       vim.fn.feedkeys(vim.api.nvim_replace_termcodes('[[', true, false, true), 'x')
+      --       vim.fn.feedkeys(vim.api.nvim_replace_termcodes('[[', true, false, true), 'x')
+      --     else
+      --       vim.fn.feedkeys(vim.api.nvim_replace_termcodes('[[', true, false, true), 'x')
+      --     end
+      --     vim.cmd 'normal! j'
+      --   end,
+      --   desc = 'Previous code chunk',
+      -- },
+      -- {
+      --   '<C-n>',
+      --   function()
+      --     vim.fn.feedkeys(vim.api.nvim_replace_termcodes(']]j', true, false, true), '')
+      --   end,
+      --   desc = 'Next code chunk',
+      -- },
     }, { mode = 'n' })
 
     wk.add({

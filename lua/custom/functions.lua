@@ -354,7 +354,7 @@ function M.goto_next_code_block()
   local query = ts.query.parse('markdown', '(fenced_code_block) @code_block')
 
   local code_blocks = {}
-  for id, node in query:iter_captures(root, 0) do
+  for _, node in query:iter_captures(root, 0) do
     local start_row, _, _ = node:start()
     table.insert(code_blocks, { node = node, start_row = start_row })
   end
@@ -398,18 +398,24 @@ function M.goto_previous_code_block()
   local query = ts.query.parse('markdown', '(fenced_code_block) @code_block')
 
   local code_blocks = {}
-  for id, node in query:iter_captures(root, 0) do
-    local start_row, _, _ = node:start()
-    table.insert(code_blocks, { node = node, start_row = start_row })
+  for _, node in query:iter_captures(root, 0) do
+    local start_row, _ = node:start()
+    local end_row, _ = node:end_()
+    table.insert(code_blocks, { node = node, start_row = start_row, end_row = end_row })
   end
 
   local current_row = vim.api.nvim_win_get_cursor(0)[1] - 1
   local prev_block = nil
-  local max_row = -1
+  local start_row_prev_block = -1
 
   for _, block in ipairs(code_blocks) do
-    if block.start_row < current_row and block.start_row > max_row then
-      max_row = block.start_row
+    local first_line_of_block_is_before_cursor = block.start_row < current_row
+    local first_line_of_block_is_after_first_line_of_prev_block = block.start_row > start_row_prev_block
+    local cursor_not_within_code_block = current_row > block.end_row
+
+    if first_line_of_block_is_before_cursor and first_line_of_block_is_after_first_line_of_prev_block and cursor_not_within_code_block then
+      -- Update first line of previous code block
+      start_row_prev_block = block.start_row
       prev_block = block
     end
   end
