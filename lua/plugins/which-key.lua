@@ -147,9 +147,9 @@ return {
       { '<leader>s', group = 'Search' },
       { '<leader>ss', '<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>', desc = 'Workspace Symbols' },
       { '<leader>sg', '<Cmd>Telescope live_grep<CR>', desc = 'Grep Project' },
-      { '<leader>sf', "<CMD>lua require('custom.telescope-config').project_files()<CR>", noremap = true, silent = true, desc = 'Find Files' },
+      -- { '<leader>sf', "<CMD>lua require('custom.telescope-config').project_files()<CR>", noremap = true, silent = true, desc = 'Find Files' },
 
-      -- { '<leader>sf', '<Cmd>Telescope find_files<CR>', desc = 'Find Files' },
+      { '<leader>sf', '<Cmd>Telescope find_files<CR>', desc = 'Find Files' },
       { '<leader>sn', '<Cmd>Telescope luasnip<CR>', desc = 'Snippets' },
       { '<leader>sh', '<Cmd>Telescope help_tags<CR>', desc = 'Help Tags' },
       {
