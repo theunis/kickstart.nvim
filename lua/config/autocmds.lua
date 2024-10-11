@@ -43,8 +43,8 @@ vim.api.nvim_create_autocmd("FileType", {
 --   augroup END
 -- ]]
 
-vim.api.nvim_create_autocmd('InsertEnter', { command = [[set norelativenumber]] })
-vim.api.nvim_create_autocmd('InsertLeave', { command = [[set relativenumber]] })
+vim.api.nvim_create_autocmd("InsertEnter", { command = [[set norelativenumber]] })
+vim.api.nvim_create_autocmd("InsertLeave", { command = [[set relativenumber]] })
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
   callback = function(args)
@@ -58,4 +58,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
   end,
   desc = "LSP: Disable hover capability from Ruff",
+})
+
+-- Create the autocmd to open Aerial only for markdown and quarto files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "quarto" },
+  callback = function()
+    vim.cmd("AerialOpen")
+  end,
+  group = vim.api.nvim_create_augroup("AerialMarkdownQuarto", { clear = true }),
 })

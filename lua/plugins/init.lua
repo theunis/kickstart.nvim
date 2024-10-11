@@ -56,4 +56,14 @@ return {
     event = { "BufReadPre", "BufNewFile" },
   },
   { "Wansmer/sibling-swap.nvim", event = { "BufReadPre", "BufNewFile" } },
+  {
+    "stevearc/aerial.nvim",
+    opts = {},
+    cmd = "AerialOpen",
+    -- Optional dependencies
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
 }
