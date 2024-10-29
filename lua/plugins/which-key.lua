@@ -102,8 +102,12 @@ return {
       { "<leader>ob", "o```{bash}<cr>```<esc>O", desc = "Bash code chunk" },
       { "<leader>or", "o```{r}<cr>```<esc>O", desc = "R code chunk" },
       { "<leader>op", "o```{python}<cr>```<cr><esc>kO", desc = "Python code chunk" },
-      { "<leader>oo", funcs.add_python_block_below, desc = "Python code chunk below" },
-      { "<leader>oO", "j[]kko```{python}<cr>```<cr><esc>O", desc = "Python code chunk above", noremap = true },
+      -- { '<leader>oo', funcs.add_python_block_below, desc = 'Python code chunk below' },
+      { "<leader>oo", funcs.add_code_block_below, desc = "Python code chunk below" },
+      { "<leader>oO", funcs.add_code_block_above, desc = "Python code chunk above" },
+      { "<leader>om", funcs.merge_with_block_below, desc = "Merge with code chunk below" },
+      { "<leader>oM", funcs.merge_with_block_above, desc = "Merge with code chunk above" },
+      -- { '<leader>oO', 'j[]kko```{python}<cr>```<cr><esc>O', desc = 'Python code chunk above', noremap = true },
       { "<leader>o-", "o```<cr><cr>```{python}<esc>kkk", desc = "Split cell" },
 
       -- Quarto keybindings

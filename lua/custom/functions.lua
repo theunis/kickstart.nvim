@@ -450,4 +450,240 @@ function M.goto_previous_code_block()
   end
 end
 
+-- Helper function to find the current code block or paragraph
+local function get_current_node()
+  local ts = vim.treesitter
+  local parser = ts.get_parser(0, "markdown")
+  local tree = parser:parse()[1]
+  local root = tree:root()
+
+  local current_row = vim.api.nvim_win_get_cursor(0)[1] - 1
+  local current_col = vim.api.nvim_win_get_cursor(0)[2]
+
+  -- Use vim.treesitter.get_node() for newer versions
+  local node = ts.get_node({ pos = { current_row, current_col } })
+
+  -- Walk up the tree until we find a code block or paragraph
+  while node and node:type() ~= "fenced_code_block" and node:type() ~= "paragraph" do
+    node = node:parent()
+  end
+
+  return node
+end
+
+-- Helper function to get text between positions
+local function get_text_between(start_row, start_col, end_row, end_col)
+  if start_row == end_row then
+    local line = vim.api.nvim_buf_get_lines(0, start_row, start_row + 1, false)[1]
+    return { line:sub(start_col + 1, end_col) }
+  end
+
+  local lines = vim.api.nvim_buf_get_lines(0, start_row, end_row + 1, false)
+  lines[1] = lines[1]:sub(start_col + 1)
+  lines[#lines] = lines[#lines]:sub(1, end_col)
+  return lines
+end
+
+-- Helper function to get code block content
+local function get_code_block_content(node)
+  local content = {}
+  for child in node:iter_children() do
+    if child:type() == "code_fence_content" then
+      local start_row, start_col, end_row, end_col = child:range()
+      local lines = get_text_between(start_row, start_col, end_row, end_col)
+      for i = 1, #lines do
+        table.insert(content, lines[i])
+      end
+      return content
+    end
+  end
+  return {}
+end
+
+-- Add a code block below current block
+function M.add_code_block_below()
+  local node = get_current_node()
+  local insert_row
+
+  if node then
+    local _, _, end_row, _ = node:range()
+    insert_row = end_row + 1
+  else
+    insert_row = vim.api.nvim_win_get_cursor(0)[1]
+  end
+
+  local lines = {
+    "",
+    "```{python}",
+    "",
+    "```",
+    "",
+  }
+
+  vim.api.nvim_buf_set_lines(0, insert_row, insert_row, false, lines)
+  vim.api.nvim_win_set_cursor(0, { insert_row + 3, 0 })
+end
+
+-- Add a code block above current block
+function M.add_code_block_above()
+  local node = get_current_node()
+  local insert_row
+
+  if node then
+    local start_row, _, _, _ = node:range()
+    insert_row = start_row
+  else
+    insert_row = vim.api.nvim_win_get_cursor(0)[1] - 1
+  end
+
+  local lines = {
+    "",
+    "```{python}",
+    "",
+    "```",
+    "",
+  }
+
+  vim.api.nvim_buf_set_lines(0, insert_row, insert_row, false, lines)
+  vim.api.nvim_win_set_cursor(0, { insert_row + 3, 0 })
+end
+
+-- Merge with code block below
+function M.merge_with_block_below()
+  local current_node = get_current_node()
+  if not current_node or current_node:type() ~= "fenced_code_block" then
+    print("Not in a code block")
+    return
+  end
+
+  local ts = vim.treesitter
+  local parser = ts.get_parser(0, "markdown")
+  local tree = parser:parse()[1]
+  local root = tree:root()
+  local query = ts.query.parse("markdown", "(fenced_code_block) @code_block")
+
+  -- Find the next code block
+  local current_end_row = select(3, current_node:range())
+  local next_block = nil
+  local min_start_row = math.huge
+
+  for _, node in query:iter_captures(root, 0) do
+    local start_row = node:start()
+    if start_row > current_end_row and start_row < min_start_row then
+      min_start_row = start_row
+      next_block = node
+    end
+  end
+
+  if not next_block then
+    print("No code block below")
+    return
+  end
+
+  -- Get the content of both blocks
+  local current_content = get_code_block_content(current_node)
+  local next_content = get_code_block_content(next_block)
+
+  -- Get the text between blocks
+  local _, _, current_end_row, current_end_col = current_node:range()
+  local next_start_row, next_start_col, _, _ = next_block:range()
+  local between_text = get_text_between(current_end_row, current_end_col, next_start_row, next_start_col)
+
+  -- Create merged content
+  local merged_lines = {
+    "```{python}",
+  }
+
+  -- Add current content
+  for _, line in ipairs(current_content) do
+    table.insert(merged_lines, line)
+  end
+
+  -- Add next content
+  for _, line in ipairs(next_content) do
+    table.insert(merged_lines, line)
+  end
+
+  table.insert(merged_lines, "```")
+
+  -- Replace the range from start of current block to end of next block
+  local current_start_row = select(1, current_node:range())
+  local next_end_row = select(3, next_block:range())
+  vim.api.nvim_buf_set_lines(0, current_start_row, next_end_row + 1, false, merged_lines)
+
+  -- If there was text between blocks, add it above merged block
+  if #between_text > 0 then
+    vim.api.nvim_buf_set_lines(0, current_start_row, current_start_row, false, between_text)
+  end
+end
+
+-- Merge with code block above
+function M.merge_with_block_above()
+  local current_node = get_current_node()
+  if not current_node or current_node:type() ~= "fenced_code_block" then
+    print("Not in a code block")
+    return
+  end
+
+  local ts = vim.treesitter
+  local parser = ts.get_parser(0, "markdown")
+  local tree = parser:parse()[1]
+  local root = tree:root()
+  local query = ts.query.parse("markdown", "(fenced_code_block) @code_block")
+
+  -- Find the previous code block
+  local current_start_row = current_node:start()
+  local prev_block = nil
+  local max_end_row = -1
+
+  for _, node in query:iter_captures(root, 0) do
+    local _, _, end_row, _ = node:range()
+    if end_row < current_start_row and end_row > max_end_row then
+      max_end_row = end_row
+      prev_block = node
+    end
+  end
+
+  if not prev_block then
+    print("No code block above")
+    return
+  end
+
+  -- Get the content of both blocks
+  local current_content = get_code_block_content(current_node)
+  local prev_content = get_code_block_content(prev_block)
+
+  -- Get the text between blocks
+  local _, _, prev_end_row, prev_end_col = prev_block:range()
+  local current_start_row, current_start_col, _, _ = current_node:range()
+  local between_text = get_text_between(prev_end_row, prev_end_col, current_start_row, current_start_col)
+
+  -- Create merged content
+  local merged_lines = {
+    "```{python}",
+  }
+
+  -- Add previous content
+  for _, line in ipairs(prev_content) do
+    table.insert(merged_lines, line)
+  end
+
+  -- Add current content
+  for _, line in ipairs(current_content) do
+    table.insert(merged_lines, line)
+  end
+
+  table.insert(merged_lines, "```")
+
+  -- Replace the range from start of previous block to end of current block
+  local prev_start_row = select(1, prev_block:range())
+  local current_end_row = select(3, current_node:range())
+  vim.api.nvim_buf_set_lines(0, prev_start_row, current_end_row + 1, false, merged_lines)
+
+  -- If there was text between blocks, add it above merged block
+  if #between_text > 0 then
+    vim.api.nvim_buf_set_lines(0, prev_start_row, prev_start_row, false, between_text)
+  end
+end
+
 return M
