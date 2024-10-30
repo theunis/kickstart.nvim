@@ -326,6 +326,16 @@ function M.execute_code_block_and_move()
   vim.cmd("normal ]]")
 end
 
+function M.combine_code_block()
+  vim.api.nvim_exec("TS", false)
+
+  -- add mark for last executed code block
+  vim.cmd("normal ml")
+
+  -- Logic to move to the next code block after execution.
+  vim.cmd("normal ]]")
+end
+
 function M.add_python_block_below()
   local function feedkeys(key, mode)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
